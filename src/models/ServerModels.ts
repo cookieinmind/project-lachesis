@@ -119,6 +119,7 @@ export enum CompareMethod {
  * Is basically the user model
  */
 export type PublicUserData = {
+  isNewbie?: boolean;
   username: string;
   storiesPlaying: {
     story_id: string;

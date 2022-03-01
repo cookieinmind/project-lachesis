@@ -69,10 +69,6 @@ module.exports = {
       '2xl': '1920px',
     },
     extend: {
-      dropShadow: {
-        'page-title': '2px 2px 0px #797297',
-        chip: '-2px 2px 0px #000000',
-      },
       transitionTimingFunction: {
         'in-out-back': 'cubic-bezier(0.7, -0.4, 0.4, 1.4)',
       },

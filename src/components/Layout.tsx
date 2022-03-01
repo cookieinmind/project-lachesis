@@ -7,7 +7,7 @@ export default function Layout({
 }) {
   return (
     <div
-      className={`relative bg-surface text-onSurface h-screen w-screen font-handwritten py-2`}
+      className={`relative bg-surface text-onSurface h-screen w-screen font-handwritten p-2`}
       id="layout"
     >
       {children}

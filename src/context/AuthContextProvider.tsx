@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
-import { browserLocalPersistence, onIdTokenChanged, User } from 'firebase/auth';
+import {
+  browserLocalPersistence,
+  onIdTokenChanged,
+  User,
+  signInAnonymously,
+  onAuthStateChanged,
+} from 'firebase/auth';
 import {
   auth,
   signInWithGoogle as _signInWithGoogle,
@@ -11,13 +17,10 @@ type IAuthContext = {
   isLoading: boolean;
   logOut: () => void;
   signInWithGoogle: () => void;
+  signInAnon: () => Promise<User>;
 };
 
-const AuthContext = createContext<IAuthContext>({
-  isLoading: false,
-  logOut: () => {},
-  signInWithGoogle: () => {},
-});
+const AuthContext = createContext<IAuthContext>(null);
 
 export const useAuth = () => useContext(AuthContext);
 
@@ -33,6 +36,11 @@ export default function AuthContextProvider({
     auth.signOut();
   }
 
+  async function signInAnon() {
+    await signInAnonymously(auth);
+    return auth.currentUser;
+  }
+
   async function signInWithGoogle() {
     await _signInWithGoogle();
     auth.setPersistence(browserLocalPersistence);
@@ -41,14 +49,14 @@ export default function AuthContextProvider({
   useEffect(() => {
     setIsLoading(true);
 
-    onIdTokenChanged(auth, async (_user) => {
-      console.log('id token changed');
+    onAuthStateChanged(auth, async (_user) => {
+      console.log('id token changed to', _user?.uid);
       if (!_user) {
         setUser(undefined);
         nookies.set(undefined, 'token', '');
       } else {
         const token = await _user.getIdToken();
-        setUser(user);
+        setUser(_user);
         nookies.set(undefined, 'token', token, {});
       }
     });
@@ -63,6 +71,7 @@ export default function AuthContextProvider({
         isLoading,
         logOut,
         signInWithGoogle,
+        signInAnon,
       }}
     >
       {children}
