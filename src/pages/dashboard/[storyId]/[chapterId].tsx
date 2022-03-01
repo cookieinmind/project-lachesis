@@ -23,6 +23,7 @@ const tutorialPoints: TutorialPoint[] = [
 
 const dummyText =
   'Shallan, a minor lighteyed woman whose family and lands are in danger, hatches a daring plot to switch a broken Soulcaster (a device that allows people to change objects to other things) with a working one belonging to Jasnah Kholin, sister of the Alethi king.';
+
 export default function ChapterEditor() {
   const router = useRouter();
   const { chapterId, storyId } = router.query;
