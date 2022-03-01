@@ -43,7 +43,7 @@ export default function CreateStory() {
         className="text-xl disabled:opacity-50"
         onClick={() => router.back()}
       >
-        {'< back to dashboard'}
+        {'< back'}
       </button>
       {/* Pick a title */}
       <div className="h-full center flex-col gap-16">
