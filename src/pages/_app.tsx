@@ -1,8 +1,32 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import Head from 'next/head';
+import '../styles/globals.css';
+import AuthContextProvider from '../context/AuthContextProvider';
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+//return <Component {...pageProps} />
+function MyApp({ Component, pageProps }) {
+  if (Component.getLayout) {
+    return (
+      <>
+        <Head>
+          <title>Confidiary</title>
+        </Head>
+        <AuthContextProvider>
+          {Component.getLayout(<Component {...pageProps} />)}
+        </AuthContextProvider>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Head>
+          <title>Confidiary</title>
+        </Head>
+        <AuthContextProvider>
+          <Component {...pageProps} />
+        </AuthContextProvider>
+      </>
+    );
+  }
 }
 
-export default MyApp
+export default MyApp;
