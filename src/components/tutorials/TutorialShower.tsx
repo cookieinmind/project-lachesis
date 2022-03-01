@@ -5,14 +5,16 @@ export function TutorialPointsDisplayer({
   tutorialPoints,
   index,
   setIndex,
+  onLastIndex,
 }: {
+  onLastIndex?: () => void;
   tutorialPoints: TutorialPoint[];
   index: number;
   setIndex: (n: number) => void;
 }) {
   function next() {
     if (index === tutorialPoints.length - 1) {
-      //close the thiny
+      if (onLastIndex) onLastIndex();
     } else setIndex(index + 1);
   }
 

@@ -7,6 +7,7 @@ import { useQuery, useMutation } from 'react-query';
 import { GetChapter, UpdateChapter } from '@/firebase/FirebaseMethods';
 import { Chapter } from '@/models/ServerModels';
 import { Loading } from '@/components/utilis/Loading';
+import { useLongPress } from 'use-long-press';
 
 const tutorialPoints: TutorialPoint[] = [
   {
@@ -22,8 +23,12 @@ const tutorialPoints: TutorialPoint[] = [
 export default function ChapterEditor() {
   const router = useRouter();
   const { chapterId, storyId } = router.query;
+  const [beginExample, setBeginExample] = useState<boolean>(false);
 
-  console.log(chapterId, storyId);
+  const bind = useLongPress((e) => {
+    console.log(typeof e);
+  }, {});
+
   const { data: chapter, isLoading } = useQuery(
     ['chapter', chapterId],
     () => GetChapter(chapterId as string),
@@ -61,11 +66,26 @@ export default function ChapterEditor() {
           style
         </span>
       </nav>
-      <TutorialPointsDisplayer
-        tutorialPoints={tutorialPoints}
-        index={tutIndex}
-        setIndex={setTutIndex}
-      />
+
+      {!beginExample && (
+        <TutorialPointsDisplayer
+          tutorialPoints={tutorialPoints}
+          index={tutIndex}
+          setIndex={setTutIndex}
+          onLastIndex={() => setBeginExample(true)}
+        />
+      )}
+
+      {beginExample && (
+        <div>
+          <p {...bind}>
+            Shallan, a minor lighteyed woman whose family and lands are in
+            danger, hatches a daring plot to switch a broken Soulcaster (a
+            device that allows people to change objects to other things) with a
+            working one belonging to Jasnah Kholin, sister of the Alethi king.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
