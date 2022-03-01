@@ -134,10 +134,10 @@ export async function GetChapters(
 export async function GetChapter(chapter_id: string): Promise<Chapter> {
   const chaptesCol = collection(db, Collections.Chapters);
   const chapRef = doc(chaptesCol, chapter_id);
-
   const docRef = await getDoc(chapRef);
-
-  return docRef.data() as Chapter;
+  const data = docRef.data();
+  console.log(data);
+  return data as Chapter;
 }
 
 export async function UpdateChapter(

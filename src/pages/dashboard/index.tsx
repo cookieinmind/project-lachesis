@@ -33,18 +33,19 @@ export default function Dashboard() {
           </p>
         </div>
       </div>
-      <Link href={DashboardRoutes.Create}>{'Create new one >'}</Link>
-      <div className="center flex-col gap-4">
-        <h2 className="text-xl opacity-50">Yours stories:</h2>
-        {storiesData &&
-          storiesData.stories.map((story, i) => {
+      <Link href={DashboardRoutes.Create}>{'Create a story >'}</Link>
+      {storiesData && storiesData.stories.length > 0 && (
+        <div className="center flex-col gap-4">
+          <h2 className="text-xl opacity-50">Yours stories:</h2>
+          {storiesData.stories.map((story, i) => {
             return (
               <Link href={GetStoryRoute(storiesData.ids[i])} key={i}>
                 {`${story.title} >`}
               </Link>
             );
           })}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

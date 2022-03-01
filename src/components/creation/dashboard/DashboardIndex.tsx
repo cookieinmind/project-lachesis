@@ -50,13 +50,13 @@ export default function DashboardIndex({
     };
 
     //2 save it in db
-    const id = await AddNewChapter(chapter);
-    story = { ...story, chapters_ids: [...story.chapters_ids, id] };
+    const chapter_id = await AddNewChapter(chapter);
+    story = { ...story, chapters_ids: [...story.chapters_ids, chapter_id] };
 
     await UpdateStory(story_id, story);
 
     //3. redirect to the chapter editor page
-    const link = GetChapterRoute(story_id, id);
+    const link = GetChapterRoute(chapter_id, story_id);
     router.push(link);
   }
 
@@ -90,7 +90,7 @@ export default function DashboardIndex({
                   chapter={c}
                   key={c.title + i}
                   chapter_id={chaptersData.ids[i]}
-                  chapterLink={GetChapterRoute(story_id, chaptersData.ids[i])}
+                  chapterLink={GetChapterRoute(chaptersData.ids[i], story_id)}
                 />
               );
             })}

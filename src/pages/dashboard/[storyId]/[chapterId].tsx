@@ -24,11 +24,12 @@ export default function ChapterEditor() {
   const { chapterId, storyId } = router.query;
 
   console.log(chapterId, storyId);
-  const { data: chapter } = useQuery(
+  const { data: chapter, isLoading } = useQuery(
     ['chapter', chapterId],
     () => GetChapter(chapterId as string),
     {
       enabled: !!chapterId,
+      onError: (e) => console.error(e),
     }
   );
 
@@ -38,7 +39,7 @@ export default function ChapterEditor() {
 
   const [tutIndex, setTutIndex] = useState<number>(0);
 
-  if (!chapter) return <Loading />;
+  if (isLoading || !chapter) return <Loading />;
 
   return (
     <div className="center flex-col w-full gap-8">
