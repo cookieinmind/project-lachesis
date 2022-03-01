@@ -1,3 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Schoolbell&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  /* * {
+    font-family: 'Amita', 'Cursive';
+  } */
+}
+
+@layer utilities {
+  .center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
