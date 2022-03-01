@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TutorialPoint } from '../../models/ClientModels/Creation';
+import { TutorialPoint } from '../../models/client/Creation';
 
 export function TutorialPointsDisplayer({
   tutorialPoints,

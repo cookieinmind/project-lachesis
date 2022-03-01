@@ -13,7 +13,8 @@ export default function Home() {
       <div className="flex flex-col items-center gap-8">
         <h1 className="text-3xl">Welcome to creator</h1>
         <h2 className="opacity-50">{'find a story >'}</h2>
-        <Link href={MainRoutes.creation}>{'create a story >'}</Link>
+        <Link href={MainRoutes.dashboard}>{'create a story >'}</Link>
+        <Link href={MainRoutes.dashboard}>{'your stories>'}</Link>
         <h2 className="opacity-50">{'your stories >'}</h2>
       </div>
 

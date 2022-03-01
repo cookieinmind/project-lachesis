@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../../../components/Layout';
+import Layout from '@/components/Layout';
 import { useQuery } from 'react-query';
-import { GetStory, UpdateStory } from '../../../../firebase/FirebaseMethods';
-import { useAuth } from '../../../../context/AuthContextProvider';
-import DashboardIndex from '../../../../components/creation/dashboard/DashboardIndex';
+import { GetStory, UpdateStory } from '@/firebase/FirebaseMethods';
+import { useAuth } from '@/context/AuthContextProvider';
+import DashboardIndex from '@/components/creation/dashboard/DashboardIndex';
 import { useRouter } from 'next/router';
-import { TutorialPointsDisplayer } from '../../../../components/Tutorials/TutorialShower';
-import { Loading } from '../../../../components/Utilis/Loading';
 import Link from 'next/link';
-import { MainRoutes } from '../../../../models/Routers';
-import { TutorialPoint } from '../../../../models/ClientModels/Creation';
+import { TutorialPointsDisplayer } from '@/components/tutorials/TutorialShower';
+import { Loading } from '@/components/utilis/Loading';
+import { MainRoutes } from '@/models/Routers';
+import { TutorialPoint } from '@/models/client/Creation';
 
 const tutorialPoints: TutorialPoint[] = [
   {
@@ -135,9 +135,9 @@ export default function CreationDashboard() {
                 <h1 className="text-2xl">
                   you have written {story.chapters_ids.length} chapters
                 </h1>
-                <h2 className="opacity-50">{'find a story >'}</h2>
-                <Link href={MainRoutes.creation}>{'go to dashboard >'}</Link>
-                <h2 className="opacity-50">{'your stories >'}</h2>
+                <Link href={MainRoutes.dashboard}>
+                  {'<  back to dashboard'}
+                </Link>
               </div>
             </div>
           )}

@@ -4,9 +4,9 @@ import { useAuth } from '../../context/AuthContextProvider';
 import { AddNewStory, CreateUserModel } from '../../firebase/FirebaseMethods';
 import { PublicUserData, Story } from '../../models/ServerModels';
 import { useRouter } from 'next/router';
-import { CreationRoutes } from '../../models/Routers';
+import { DashboardRoutes, GetStoryRoute } from '../../models/Routers';
 
-export default function CreatorIndex() {
+export default function CreateStory() {
   const [title, setTitle] = useState<string>();
   const { user, signInAnon } = useAuth();
   const router = useRouter();
@@ -28,10 +28,12 @@ export default function CreatorIndex() {
       description: '',
       author_uid: user.uid,
       chapters_ids: [],
+      tutorialFinished: false,
     };
 
     const id = await AddNewStory(story);
-    router.push(CreationRoutes.Stories + id);
+    const link = GetStoryRoute(id);
+    router.push(link);
   }
 
   return (
@@ -71,6 +73,6 @@ export default function CreatorIndex() {
   );
 }
 
-CreatorIndex.getLayout = function getLayout(page) {
+CreateStory.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };

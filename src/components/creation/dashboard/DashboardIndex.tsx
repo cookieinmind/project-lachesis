@@ -5,14 +5,9 @@ import {
   AddNewChapter,
   GetChapters,
   UpdateStory,
-} from '../../../firebase/FirebaseMethods';
-import { CreationRoutes } from '../../../models/Routers';
-import {
-  Chapter,
-  Connection,
-  Destination,
-  Story,
-} from '../../../models/ServerModels';
+} from '@/firebase/FirebaseMethods';
+import { DashboardRoutes, GetChapterRoute } from '@/models/Routers';
+import { Chapter, Connection, Destination, Story } from '@/models/ServerModels';
 
 export default function DashboardIndex({
   story,
@@ -61,7 +56,8 @@ export default function DashboardIndex({
     await UpdateStory(story_id, story);
 
     //3. redirect to the chapter editor page
-    router.push(CreationRoutes.Chapters + id);
+    const link = GetChapterRoute(story_id, id);
+    router.push(link);
   }
 
   return (
@@ -94,6 +90,7 @@ export default function DashboardIndex({
                   chapter={c}
                   key={c.title + i}
                   chapter_id={chaptersData.ids[i]}
+                  chapterLink={GetChapterRoute(story_id, chaptersData.ids[i])}
                 />
               );
             })}
@@ -116,15 +113,15 @@ export default function DashboardIndex({
 function ChapterItem({
   chapter,
   chapter_id,
+  chapterLink,
 }: {
   chapter: Chapter;
   chapter_id: string;
+  chapterLink: string;
 }) {
   const router = useRouter();
   function openChapter() {
-    const link = CreationRoutes.Chapters + chapter_id;
-    console.log(link);
-    router.push(link);
+    router.push(chapterLink);
   }
 
   return (

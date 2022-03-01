@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { TutorialPoint } from '../../../../models/ClientModels/Creation';
-import { TutorialPointsDisplayer } from '../../../../components/Tutorials/TutorialShower';
-import Layout from '../../../../components/Layout';
+import { TutorialPoint } from '@/models/client/Creation';
+import { TutorialPointsDisplayer } from '@/components/tutorials/TutorialShower';
+import Layout from '@/components/Layout';
 import { useQuery, useMutation } from 'react-query';
-import {
-  GetChapter,
-  UpdateChapter,
-} from '../../../../firebase/FirebaseMethods';
-import { Chapter } from '../../../../models/ServerModels';
-import { Loading } from '../../../../components/Utilis/Loading';
+import { GetChapter, UpdateChapter } from '@/firebase/FirebaseMethods';
+import { Chapter } from '@/models/ServerModels';
+import { Loading } from '@/components/utilis/Loading';
 
 const tutorialPoints: TutorialPoint[] = [
   {
@@ -24,8 +21,9 @@ const tutorialPoints: TutorialPoint[] = [
 ];
 export default function ChapterEditor() {
   const router = useRouter();
-  const { chapterId } = router.query;
+  const { chapterId, storyId } = router.query;
 
+  console.log(chapterId, storyId);
   const { data: chapter } = useQuery(
     ['chapter', chapterId],
     () => GetChapter(chapterId as string),

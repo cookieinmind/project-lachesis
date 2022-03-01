@@ -58,6 +58,24 @@ export async function GetUserStories(uid: string): Promise<Story[]> {
   return data;
 }
 
+export async function GetUserStoriesWithIds(
+  uid: string
+): Promise<{ stories: Story[]; ids: string[] }> {
+  const storiesCol = collection(db, Collections.Stories);
+
+  const q = query(storiesCol, where('author_uid', '==', uid));
+
+  const docs = await getDocs(q);
+
+  const stories: Story[] = [];
+  const ids: string[] = [];
+
+  docs.forEach((d) => stories.push(d.data() as Story));
+  docs.forEach((d) => ids.push(d.id));
+
+  return { stories, ids };
+}
+
 export async function GetStory(storyId: string): Promise<Story> {
   const storiesCol = collection(db, Collections.Stories);
   const storyRef = doc(storiesCol, storyId);

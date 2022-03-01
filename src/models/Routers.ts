@@ -1,10 +1,17 @@
 export enum MainRoutes {
-  creation = '/creation',
+  dashboard = '/dashboard',
   home = '/',
 }
 
-export enum CreationRoutes {
-  Dashboard = '/creation/dashboard',
-  Stories = '/creation/dashboard/story/',
-  Chapters = '/creation/dashboard/chapter/',
+export enum DashboardRoutes {
+  Dashboard = '/dashboard',
+  Create = '/dashboard/create',
+}
+
+export function GetChapterRoute(chapter_id: string, story_id: string) {
+  return `${DashboardRoutes.Dashboard}/${story_id}/${chapter_id}`;
+}
+
+export function GetStoryRoute(story_id: string) {
+  return `${DashboardRoutes.Dashboard}/${story_id}`;
 }
