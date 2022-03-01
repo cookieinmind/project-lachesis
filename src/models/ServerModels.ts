@@ -18,6 +18,7 @@ export type Chapter = {
   title: string;
   chapterNumber: number;
   routes_ids: string[];
+  storyTitle: string;
 };
 
 export type Route = {

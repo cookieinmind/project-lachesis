@@ -9,8 +9,9 @@ import { TutorialPointsDisplayer } from '../../../../components/Tutorials/Tutori
 import { Loading } from '../../../../components/Utilis/Loading';
 import Link from 'next/link';
 import { MainRoutes } from '../../../../models/Routers';
+import { TutorialPoint } from '../../../../models/ClientModels/Creation';
 
-const tutorialPoints = [
+const tutorialPoints: TutorialPoint[] = [
   {
     title: 'stories are divided in chapters',
     text: [
@@ -19,6 +20,7 @@ const tutorialPoints = [
       'specially if this is your first one',
     ],
     isThereANext: true,
+    buttonText: 'next',
   },
   {
     title: 'this is your index',
@@ -27,6 +29,7 @@ const tutorialPoints = [
       'all of your chapters will appear in there',
     ],
     isThereANext: true,
+    buttonText: 'next',
   },
   {
     title: 'this is your deck',
@@ -36,11 +39,13 @@ const tutorialPoints = [
       'we recommend using it',
     ],
     isThereANext: true,
+    buttonText: 'next',
   },
   {
     title: "let's create your first chapter",
     text: ['Open your index', '(the one on your left ...)'],
     isThereANext: false,
+    buttonText: '',
   },
 ];
 
@@ -66,7 +71,7 @@ export default function CreationDashboard() {
     return await GetStory(story_Id as string);
   }
   useEffect(() => {
-    const isFinishedOnServer = story.tutorialFinished;
+    const isFinishedOnServer = story?.tutorialFinished;
     const isFinishedOnClient = tutIndex === tutorialPoints.length - 1;
 
     if (isFinishedOnClient && !isFinishedOnServer) {

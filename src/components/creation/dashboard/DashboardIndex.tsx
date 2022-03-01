@@ -51,6 +51,7 @@ export default function DashboardIndex({
       story_id,
       initialSetup: dest,
       routes_ids: [],
+      storyTitle: story.title,
     };
 
     //2 save it in db

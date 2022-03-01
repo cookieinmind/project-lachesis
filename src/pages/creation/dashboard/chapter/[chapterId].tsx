@@ -11,24 +11,15 @@ import {
 import { Chapter } from '../../../../models/ServerModels';
 import { Loading } from '../../../../components/Utilis/Loading';
 
-const tutorialPoints = [
+const tutorialPoints: TutorialPoint[] = [
   {
-    title: 'FYI:',
+    title: 'About chapters',
     text: [
-      '1. chapters are automatically numbered',
-      '2. you can change the numbers',
-      "3. the number of the chapter decides the order in which they're shown to the player",
+      'most of your chapters are probably going to be static text (like most books) but, at some points in the story you might want to give your readers an option',
+      'to do that, just pressed a paragraph for a few seconds and the options will pop up',
     ],
     isThereANext: true,
-  },
-  {
-    title: 'FYI:',
-    text: [
-      '4. chapters have names',
-      "5. is your choice if you want your players to see the name of the chapters. Some writers use the names as a form of organization, others like to tease their players with the titles. It's your call",
-      '6. names can be edited at any point',
-    ],
-    isThereANext: true,
+    buttonText: 'start writing',
   },
 ];
 export default function ChapterEditor() {
@@ -55,10 +46,14 @@ export default function ChapterEditor() {
     <div className="center flex-col w-full gap-8">
       <nav className="flex w-full justify-between items-center">
         <button
-          className="first-letter:capitalize opacity-50 text-xl"
+          className="first-letter:capitalize opacity-50 text-xl flex items-center gap-4"
           onClick={() => router.back()}
         >
-          {`<    ${chapter.title}`}
+          {'<'}
+          <div className="flex flex-col items-start">
+            <span className="text-lg">{chapter.title}</span>
+            <span className="text-sm">{chapter.storyTitle}</span>
+          </div>
         </button>
 
         <span

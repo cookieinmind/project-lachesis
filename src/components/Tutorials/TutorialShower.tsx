@@ -30,7 +30,7 @@ function PointDisplay({
     <div className="center flex-col gap-8">
       <div className="flex flex-col gap-4 text-center">
         <h1 className="text-2xl">{tutPoint.title}</h1>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-3">
           {tutPoint.text.map((t, i) => {
             return (
               <p key={i} className="first-letter:capitalize">
@@ -40,7 +40,9 @@ function PointDisplay({
           })}
         </div>
       </div>
-      {tutPoint.isThereANext && <button onClick={next}>{'got it >'}</button>}
+      {tutPoint.isThereANext && (
+        <button onClick={next}>{`${tutPoint.buttonText} >`}</button>
+      )}
     </div>
   );
 }
