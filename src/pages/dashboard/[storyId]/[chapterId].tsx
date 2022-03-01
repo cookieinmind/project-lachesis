@@ -7,7 +7,7 @@ import { useQuery, useMutation } from 'react-query';
 import { GetChapter, UpdateChapter } from '@/firebase/FirebaseMethods';
 import { Chapter } from '@/models/ServerModels';
 import { Loading } from '@/components/utilis/Loading';
-import { useLongPress } from 'use-long-press';
+import TextField from '@/components/creation/writing/TextField';
 
 const tutorialPoints: TutorialPoint[] = [
   {
@@ -20,14 +20,13 @@ const tutorialPoints: TutorialPoint[] = [
     buttonText: 'show me how',
   },
 ];
+
+const dummyText =
+  'Shallan, a minor lighteyed woman whose family and lands are in danger, hatches a daring plot to switch a broken Soulcaster (a device that allows people to change objects to other things) with a working one belonging to Jasnah Kholin, sister of the Alethi king.';
 export default function ChapterEditor() {
   const router = useRouter();
   const { chapterId, storyId } = router.query;
   const [beginExample, setBeginExample] = useState<boolean>(false);
-
-  const bind = useLongPress((e) => {
-    console.log(typeof e);
-  }, {});
 
   const { data: chapter, isLoading } = useQuery(
     ['chapter', chapterId],
@@ -77,14 +76,10 @@ export default function ChapterEditor() {
       )}
 
       {beginExample && (
-        <div>
-          <p {...bind}>
-            Shallan, a minor lighteyed woman whose family and lands are in
-            danger, hatches a daring plot to switch a broken Soulcaster (a
-            device that allows people to change objects to other things) with a
-            working one belonging to Jasnah Kholin, sister of the Alethi king.
-          </p>
-        </div>
+        <TextField
+          defaultText={dummyText}
+          onEnter={() => console.error('to do')}
+        />
       )}
     </div>
   );

@@ -136,7 +136,6 @@ export async function GetChapter(chapter_id: string): Promise<Chapter> {
   const chapRef = doc(chaptesCol, chapter_id);
   const docRef = await getDoc(chapRef);
   const data = docRef.data();
-  console.log(data);
   return data as Chapter;
 }
 
