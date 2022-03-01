@@ -2,8 +2,8 @@ import { MainRoutes } from '@/models/Routers';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
-const TIME_FOR_MESSAGE = 1000 * 2;
-const TIME_FOR_LINK = 1000 * 5;
+const TIME_FOR_MESSAGE = 1000 * 5;
+const TIME_FOR_LINK = 1000 * 8;
 
 export function Loading() {
   const [messageIsDisplayed, setMsgIsDisplayed] = useState(false);
