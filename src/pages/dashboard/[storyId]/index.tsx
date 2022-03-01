@@ -56,23 +56,23 @@ export default function CreationDashboard() {
 
   const { user } = useAuth();
   const { data: story } = useQuery(
-    ['user stories', user?.uid],
-    getUserStories,
+    ['story', story_Id],
+    () => GetStory(story_Id as string),
     {
       enabled: !!user,
     }
   );
 
-  const [tutIndex, setTutIndex] = useState<number>(
-    story?.tutorialFinished ? tutorialPoints.length - 1 : 0
-  );
+  const [tutIndex, setTutIndex] = useState<number>(0);
 
-  async function getUserStories() {
-    return await GetStory(story_Id as string);
-  }
   useEffect(() => {
-    const isFinishedOnServer = story?.tutorialFinished;
+    console.log(story);
+    if (!story) return;
+
+    const isFinishedOnServer = story.tutorialFinished;
     const isFinishedOnClient = tutIndex === tutorialPoints.length - 1;
+
+    // console.log(isFinishedOnClient, isFinishedOnServer);
 
     if (isFinishedOnClient && !isFinishedOnServer) {
       //Update server

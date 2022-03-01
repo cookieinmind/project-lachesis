@@ -33,6 +33,7 @@ export default function CreateStory() {
 
     const id = await AddNewStory(story);
     const link = GetStoryRoute(id);
+    console.log('-', story);
     router.push(link);
   }
 
