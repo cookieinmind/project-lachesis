@@ -16,7 +16,7 @@ const tutorialPoints: TutorialPoint[] = [
       'to do that, just pressed a paragraph for a few seconds and the options will pop up',
     ],
     isThereANext: true,
-    buttonText: 'start writing',
+    buttonText: 'show me how',
   },
 ];
 export default function ChapterEditor() {
