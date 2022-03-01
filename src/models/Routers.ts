@@ -4,5 +4,7 @@ export enum MainRoutes {
 }
 
 export enum CreationRoutes {
-  dashboard = '/creation/dashboard',
+  Dashboard = '/creation/dashboard',
+  Stories = '/creation/dashboard/story/',
+  Chapters = '/creation/dashboard/chapter/',
 }

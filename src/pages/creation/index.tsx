@@ -31,7 +31,7 @@ export default function CreatorIndex() {
     };
 
     const id = await AddNewStory(story);
-    router.push(CreationRoutes.dashboard + '/' + id);
+    router.push(CreationRoutes.Stories + id);
   }
 
   return (

@@ -7,8 +7,9 @@ import {
   query,
   where,
   getDocs,
+  updateDoc,
 } from 'firebase/firestore';
-import { PublicUserData, Story } from '../models/ServerModels';
+import { Chapter, PublicUserData, Story } from '../models/ServerModels';
 import { Collections } from './References';
 import { firestore as db } from './firebase_config';
 
@@ -64,4 +65,59 @@ export async function GetStory(storyId: string): Promise<Story> {
   const docRef = await getDoc(storyRef);
 
   return docRef.data() as Story;
+}
+
+//! Chapters
+
+/**
+ *
+ * @param chapter chapter to add to the db
+ * @returns the id of the saved chapter
+ */
+export async function AddNewChapter(chapter: Chapter): Promise<string> {
+  const chapters = collection(db, Collections.Chapters);
+  try {
+    const docReference = await addDoc(chapters, chapter);
+    return docReference.id;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function GetChapters(
+  story_id: string
+): Promise<{ chapters: Chapter[]; ids: string[] }> {
+  const chaptersCol = collection(db, Collections.Chapters);
+
+  const q = query(chaptersCol, where('story_id', '==', story_id));
+
+  const docs = await getDocs(q);
+
+  const chapters: Chapter[] = [];
+  const ids: string[] = [];
+
+  docs.forEach((d) => {
+    chapters.push(d.data() as Chapter);
+    ids.push(d.id);
+  });
+
+  return { chapters, ids };
+}
+
+export async function GetChapter(chapter_id: string): Promise<Chapter> {
+  const chaptesCol = collection(db, Collections.Chapters);
+  const chapRef = doc(chaptesCol, chapter_id);
+
+  const docRef = await getDoc(chapRef);
+
+  return docRef.data() as Chapter;
+}
+
+export async function updateChapter(
+  chapter_id: string,
+  chapter: Chapter
+): Promise<void> {
+  const chaptesCol = collection(db, Collections.Chapters);
+  const chapRef = doc(chaptesCol, chapter_id);
+  await updateDoc(chapRef, chapter);
 }
