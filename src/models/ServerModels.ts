@@ -6,6 +6,7 @@ export type Story = {
   title: string;
   description: string;
   chapters_ids: string[];
+  tutorialFinished: boolean;
 };
 
 /**

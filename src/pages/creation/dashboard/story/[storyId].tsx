@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Layout from '../../../../components/Layout';
 import { useQuery } from 'react-query';
-import { GetStory } from '../../../../firebase/FirebaseMethods';
+import { GetStory, UpdateStory } from '../../../../firebase/FirebaseMethods';
 import { useAuth } from '../../../../context/AuthContextProvider';
 import DashboardIndex from '../../../../components/creation/dashboard/DashboardIndex';
 import { useRouter } from 'next/router';
 import { TutorialPointsDisplayer } from '../../../../components/Tutorials/TutorialShower';
 import { Loading } from '../../../../components/Utilis/Loading';
+import Link from 'next/link';
+import { MainRoutes } from '../../../../models/Routers';
 
 const tutorialPoints = [
   {
@@ -44,9 +46,8 @@ const tutorialPoints = [
 
 export default function CreationDashboard() {
   const router = useRouter();
+  const { logOut } = useAuth();
   const { storyId: story_Id } = router.query;
-
-  const [tutIndex, setTutIndex] = useState<number>(0);
 
   const { user } = useAuth();
   const { data: story } = useQuery(
@@ -57,9 +58,28 @@ export default function CreationDashboard() {
     }
   );
 
+  const [tutIndex, setTutIndex] = useState<number>(
+    story?.tutorialFinished ? tutorialPoints.length - 1 : 0
+  );
+
   async function getUserStories() {
     return await GetStory(story_Id as string);
   }
+  useEffect(() => {
+    const isFinishedOnServer = story.tutorialFinished;
+    const isFinishedOnClient = tutIndex === tutorialPoints.length - 1;
+
+    if (isFinishedOnClient && !isFinishedOnServer) {
+      //Update server
+      story.tutorialFinished = true;
+      UpdateStory(story_Id as string, story);
+    }
+
+    if (!isFinishedOnClient && isFinishedOnServer) {
+      //Update client
+      setTutIndex(tutorialPoints.length - 1);
+    }
+  }, [tutIndex, story, story_Id]);
 
   const [indexIsOpen, setIndexIsOpen] = useState<boolean>(false);
 
@@ -96,11 +116,27 @@ export default function CreationDashboard() {
               style
             </span>
           </nav>
-          <TutorialPointsDisplayer
-            tutorialPoints={tutorialPoints}
-            index={tutIndex}
-            setIndex={setTutIndex}
-          />
+          {story && !story.tutorialFinished && (
+            <TutorialPointsDisplayer
+              tutorialPoints={tutorialPoints}
+              index={tutIndex}
+              setIndex={setTutIndex}
+            />
+          )}
+
+          {story && story.tutorialFinished && (
+            <div>
+              <div className="flex flex-col items-center gap-8">
+                <h1 className="text-2xl">
+                  you have written {story.chapters_ids.length} chapters
+                </h1>
+                <h2 className="opacity-50">{'find a story >'}</h2>
+                <Link href={MainRoutes.creation}>{'go to dashboard >'}</Link>
+                <h2 className="opacity-50">{'your stories >'}</h2>
+              </div>
+            </div>
+          )}
+
           <div />
         </div>
       </div>

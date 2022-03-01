@@ -67,6 +67,15 @@ export async function GetStory(storyId: string): Promise<Story> {
   return docRef.data() as Story;
 }
 
+export async function UpdateStory(
+  story_id: string,
+  story: Story
+): Promise<void> {
+  const storyCol = collection(db, Collections.Stories);
+  const chapRef = doc(storyCol, story_id);
+  await updateDoc(chapRef, story);
+}
+
 //! Chapters
 
 /**
@@ -113,7 +122,7 @@ export async function GetChapter(chapter_id: string): Promise<Chapter> {
   return docRef.data() as Chapter;
 }
 
-export async function updateChapter(
+export async function UpdateChapter(
   chapter_id: string,
   chapter: Chapter
 ): Promise<void> {

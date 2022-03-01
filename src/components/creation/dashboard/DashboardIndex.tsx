@@ -1,7 +1,11 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { AddNewChapter, GetChapters } from '../../../firebase/FirebaseMethods';
+import {
+  AddNewChapter,
+  GetChapters,
+  UpdateStory,
+} from '../../../firebase/FirebaseMethods';
 import { CreationRoutes } from '../../../models/Routers';
 import {
   Chapter,
@@ -51,6 +55,9 @@ export default function DashboardIndex({
 
     //2 save it in db
     const id = await AddNewChapter(chapter);
+    story = { ...story, chapters_ids: [...story.chapters_ids, id] };
+
+    await UpdateStory(story_id, story);
 
     //3. redirect to the chapter editor page
     router.push(CreationRoutes.Chapters + id);

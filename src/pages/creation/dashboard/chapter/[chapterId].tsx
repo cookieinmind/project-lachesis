@@ -6,7 +6,7 @@ import Layout from '../../../../components/Layout';
 import { useQuery, useMutation } from 'react-query';
 import {
   GetChapter,
-  updateChapter,
+  UpdateChapter,
 } from '../../../../firebase/FirebaseMethods';
 import { Chapter } from '../../../../models/ServerModels';
 import { Loading } from '../../../../components/Utilis/Loading';
@@ -44,7 +44,7 @@ export default function ChapterEditor() {
   );
 
   const mutation = useMutation((update: Chapter) => {
-    return updateChapter(chapterId as string, update);
+    return UpdateChapter(chapterId as string, update);
   });
 
   const [tutIndex, setTutIndex] = useState<number>(0);
