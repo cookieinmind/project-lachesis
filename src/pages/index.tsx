@@ -14,7 +14,7 @@ export default function Home() {
         <h1 className="text-3xl">Welcome to creator</h1>
         <h2 className="opacity-50">{'find a story >'}</h2>
         <Link href={DashboardRoutes.Create}>{'create a story >'}</Link>
-        <Link href={MainRoutes.dashboard}>{'your dashboard >'}</Link>
+        {user && <Link href={MainRoutes.dashboard}>{'your dashboard >'}</Link>}
       </div>
 
       {user && <button onClick={logOut}>Log out</button>}
