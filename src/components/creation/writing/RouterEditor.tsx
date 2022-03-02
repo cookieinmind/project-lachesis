@@ -1,3 +1,4 @@
+import { CreateRoute } from '@/models/ChapterHelpers';
 import { Route } from '@/models/ServerModels';
 import React, { useCallback, useEffect, useRef } from 'react';
 import TextField from './TextField';
@@ -9,31 +10,24 @@ export default function RouterEditor({
   routes,
   addRoute,
   deleteRoute,
-  chapter_id,
 }: {
   routes: Route[];
   addRoute: (route: Route) => Promise<void>;
   deleteRoute: (route: Route) => Promise<void>;
-  chapter_id: string;
 }) {
   const createdOne = useRef<boolean>(false);
 
   const CreateAndFocus = useCallback(
     async (firstOne: boolean = false) => {
       //Create a new route
-      const newRoute: Route = {
-        chapter_id: chapter_id,
-        text: '',
-        fork: null,
-        firstOne,
-      };
+      const newRoute: Route = CreateRoute();
 
       //added to the list
       await addRoute(newRoute);
 
       //make the app focus on the new component
     },
-    [addRoute, chapter_id]
+    [addRoute]
   );
 
   useEffect(() => {

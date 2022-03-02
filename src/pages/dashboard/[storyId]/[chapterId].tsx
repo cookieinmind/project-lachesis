@@ -101,7 +101,6 @@ export default function ChapterEditor() {
             const update = AddRouteToChapter(chapter, route);
             chapterMutation.mutate(update);
           }}
-          chapter_id={chapter_id as string}
           deleteRoute={async (route: Route) => {
             console.error('to do: delete route');
           }}
