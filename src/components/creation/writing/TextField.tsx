@@ -14,16 +14,20 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 export default function TextField({
   onEnter,
-  defaultText,
+  initialText,
+  updateText,
+  placeholder,
 }: {
+  placeholder: string;
   onEnter: () => void;
-  defaultText?: string;
+  initialText?: string;
+  updateText: (text: string) => void;
 }) {
-  const longPress = useLongPress(() => {
-    console.log('see!');
-  }, {});
+  const [text, setText] = useState<string>(initialText ? initialText : '');
 
-  const [text, setText] = useState<string>(defaultText ? defaultText : '');
+  const longPress = useLongPress(() => {
+    console.log('long pressed!');
+  }, {});
 
   function checkForEnter(e: React.KeyboardEvent) {
     if (e.code === 'Enter') {
@@ -33,9 +37,13 @@ export default function TextField({
 
   return (
     <TextareaAutosize
-      className="w-full border-0 bg-transparent h-full focus:ring-0"
+      className="w-full borde bg-transparent h-full focus:ring-0 border-2 border-primary"
       value={text}
-      onChange={(e) => setText(e.target.value)}
+      placeholder={placeholder}
+      onChange={(e) => {
+        updateText(e.target.value);
+        setText(e.target.value);
+      }}
       onKeyUp={checkForEnter}
       {...longPress}
     />
