@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useLongPress } from 'use-long-press';
 import TextareaAutosize from 'react-textarea-autosize';
 import { HoverMenu } from './HoverMenu';
@@ -31,22 +31,43 @@ export default function TextField({
     setShowMenu(true);
   }, {});
 
-  // function checkForEnter(e: React.KeyboardEvent) {
-  //   const userPressedEnter = e.code === 'Enter';
-  //   const theFieldIsNotEmpty = text.trim() !== '';
-  //   if (userPressedEnter && theFieldIsNotEmpty) {
-  //     console.log('creating a new route!');
-  //     e.preventDefault();
-  //     createNewOne();
-  //     return;
-  //   }
-  // }
+  const hideMenu = useCallback(() => {
+    console.log('!');
+    setShowMenu(false);
+  }, []);
+
+  const menus = [
+    {
+      text: "add to character's dialogue",
+      onClick: () => setShowMenu(false),
+      disabled: true,
+    },
+    {
+      text: 'add check',
+      onClick: () => setShowMenu(false),
+      disabled: true,
+    },
+    ,
+    {
+      text: 'add option',
+      onClick: () => {
+        createNewOne();
+        // setShowMenu(false);
+      },
+      disabled: false,
+    },
+    {
+      text: 'close it!',
+      onClick: hideMenu,
+      disabled: false,
+    },
+  ];
 
   return (
     <div className="relative z-0 w-full">
       <TextareaAutosize
-        className={`w-full borde bg-transparent h-full focus:ring-0 border-0 border-none resize-none
-          ${showMenu ? 'opacity-50 underline' : ''}
+        className={`w-full z-10 borde bg-transparent h-full focus:ring-0 border-0 border-none resize-none
+          ${showMenu ? 'opacity- underline' : ''}
         `}
         value={text}
         placeholder={placeholder}
@@ -58,28 +79,7 @@ export default function TextField({
         {...longPress}
       />
 
-      <HoverMenu
-        hide={() => setShowMenu(false)}
-        menuItems={[
-          {
-            text: "add to character's dialogue",
-            onClick: () => setShowMenu(false),
-            disabled: true,
-          },
-          {
-            text: 'add check',
-            onClick: () => setShowMenu(false),
-            disabled: true,
-          },
-          ,
-          {
-            text: 'add option',
-            onClick: () => setShowMenu(false),
-            disabled: false,
-          },
-        ]}
-        shouldBeVisible={showMenu}
-      />
+      <HoverMenu menuItems={menus} showMenu={showMenu} hide={hideMenu} />
     </div>
   );
 }

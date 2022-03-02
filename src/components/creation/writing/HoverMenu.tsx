@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
+import Modal from '@/components/utilis/Modal';
+import { useModal } from '@/context/ModalContextProvider';
 
 export type iHoverMenuItem = {
   text: string;
@@ -8,22 +10,29 @@ export type iHoverMenuItem = {
 
 export function HoverMenu({
   menuItems,
-  shouldBeVisible,
+  showMenu,
   hide,
 }: {
   menuItems: iHoverMenuItem[];
-  shouldBeVisible: boolean;
+  showMenu: boolean;
   hide: () => void;
 }) {
+  // const { isModalOn, setIsModalOn } = useModal();
+
+  // useEffect(() => {
+  //   console.log('effect');
+  //   setIsModalOn(showMenu);
+  // }, [showMenu, setIsModalOn]);
+
   return (
     <div
       className={`absolute left-[50%] translate-x-[-50%] top-[50%] z-20
                    flex flex-col
                  bg-onSurface text-surface drop-shadow-xl rounded-lg overflow-hidden
-                   h-fit   
+                   h-fit w-10/12
                    transition-all duration-150 ease-in-out
                    ${
-                     shouldBeVisible
+                     showMenu
                        ? 'visible opacity-100 scale-100'
                        : 'invisible opacity-0 scale-75'
                    }

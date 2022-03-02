@@ -17,28 +17,25 @@ export default function RouterEditor({
 }) {
   const createdOne = useRef<boolean>(false);
 
-  const CreateAndFocus = useCallback(
-    async (firstOne: boolean = false) => {
-      //Create a new route
-      const newRoute: Route = CreateRoute();
+  const CreateAndFocus = useCallback(async () => {
+    //Create a new route
+    const newRoute: Route = CreateRoute();
 
-      //added to the list
-      await addRoute(newRoute);
+    //added to the list
+    await addRoute(newRoute);
 
-      //make the app focus on the new component
-    },
-    [addRoute]
-  );
+    //make the app focus on the new component
+  }, [addRoute]);
 
   useEffect(() => {
     if (routes.length === 0 && !createdOne.current) {
       createdOne.current = true;
-      CreateAndFocus(true);
+      CreateAndFocus();
     }
   }, [routes, CreateAndFocus]);
 
   return (
-    <div className="w-full">
+    <div className="w-full" id="route editor">
       {routes.map((route, i) => {
         return (
           <TextField
@@ -52,6 +49,10 @@ export default function RouterEditor({
             createNewOne={CreateAndFocus}
           />
         );
+        //TODO:
+        /**
+         * Move the portal to here and pass a method so that each TextField can call it with its params
+         */
       })}
     </div>
   );
