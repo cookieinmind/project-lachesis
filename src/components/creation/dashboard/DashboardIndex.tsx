@@ -1,13 +1,8 @@
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery } from 'react-query';
-import {
-  AddNewChapter,
-  CreateRoute,
-  GetChapters,
-  UpdateStory,
-} from '@/firebase/FirebaseMethods';
-import { DashboardRoutes, GetChapterRoute } from '@/models/Routers';
+import { AddNewChapter, GetChapters } from '@/firebase/FirebaseMethods';
+import { GetChapterRoute } from '@/models/Routers';
 import {
   Chapter,
   Connection,
@@ -15,6 +10,7 @@ import {
   Route,
   Story,
 } from '@/models/ServerModels';
+import { CreateRoute } from '@/models/ChapterHelpers';
 
 export default function DashboardIndex({
   story,
@@ -47,34 +43,20 @@ export default function DashboardIndex({
       }
     });
 
+    const chapterInitialRoute = CreateRoute();
+
     const chapter: Chapter = {
       title: `chapter ${highestNumber}`,
       chapterNumber: highestNumber,
       story_id,
       initialSetup: dest,
-      routes_ids: [],
+      routes: [chapterInitialRoute],
       storyTitle: story.title,
     };
 
     //2 save it in db
-    const chapter_id = await AddNewChapter(chapter);
+    const chapter_id = await AddNewChapter(chapter, story_id, story);
     story = { ...story, chapters_ids: [...story.chapters_ids, chapter_id] };
-
-    const chapterInitialRoute: Route = {
-      text: '',
-      fork: null,
-      chapter_id: chapter_id,
-    };
-
-    //Update the story and route
-    const promises: Promise<void>[] = [
-      UpdateStory(story_id, story),
-      CreateRoute(chapterInitialRoute, chapter_id, chapter),
-    ];
-
-    await Promise.all(promises);
-    // await UpdateStory(story_id, story);
-    // await CreateRoute(chapterInitialRoute, chapter_id, chapter);
 
     //3. redirect to the chapter editor page
     const link = GetChapterRoute(chapter_id, story_id);

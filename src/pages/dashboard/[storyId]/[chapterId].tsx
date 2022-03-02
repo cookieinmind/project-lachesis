@@ -4,17 +4,12 @@ import { TutorialPoint } from '@/models/client/Creation';
 import { TutorialPointsDisplayer } from '@/components/tutorials/TutorialShower';
 import Layout from '@/components/Layout';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import {
-  CreateRoute,
-  GetChapter,
-  GetRoutesWithIds,
-  UpdateChapter,
-  UpdateRoute,
-} from '@/firebase/FirebaseMethods';
+import { GetChapter, UpdateChapter } from '@/firebase/FirebaseMethods';
 import { Chapter, Route } from '@/models/ServerModels';
 import { Loading } from '@/components/utilis/Loading';
 import TextField from '@/components/creation/writing/TextField';
 import RouterEditor from '@/components/creation/writing/RouterEditor';
+import { AddRouteToChapter } from '@/models/ChapterHelpers';
 
 const tutorialPoints: TutorialPoint[] = [
   {
@@ -42,7 +37,6 @@ export default function ChapterEditor() {
   const router = useRouter();
   const { chapterId: chapter_id, storyId } = router.query;
   const CHAPTER_QUERY = ['chapter', chapter_id];
-  const ROUTES_QUERY = ['routes', chapter_id];
 
   const queryClient = useQueryClient();
 
@@ -61,38 +55,20 @@ export default function ChapterEditor() {
     }
   );
 
-  const { data: routesData } = useQuery(
-    ROUTES_QUERY,
-    () => GetRoutesWithIds(chapter_id as string),
-    {
-      enabled: !!chapter_id,
-      onSuccess: () => console.log('updated routes'),
-      onError: (e) => console.error(e),
-    }
-  );
-
   //*Mutations
-  const chapterMutation = useMutation((update: Chapter) => {
-    return UpdateChapter(chapter_id as string, update);
-  });
-
-  const routeUpdateMutation = useMutation(
-    ({ route_id, routeUpdate, chapterUpdate }: iRouteMutationParams) => {
-      return UpdateRoute(
-        route_id,
-        routeUpdate,
-        chapter_id as string,
-        chapterUpdate
-      );
+  const chapterMutation = useMutation(
+    (update: Chapter) => {
+      return UpdateChapter(chapter_id as string, update);
+    },
+    {
+      onSuccess: () => {
+        invalidateChapter();
+      },
     }
   );
 
   //*Invalidating queries
   function invalidateChapter() {
-    queryClient.invalidateQueries(CHAPTER_QUERY);
-  }
-
-  function invalidateRoutes() {
     queryClient.invalidateQueries(CHAPTER_QUERY);
   }
 
@@ -130,11 +106,10 @@ export default function ChapterEditor() {
 
       {beginExample && (
         <RouterEditor
-          routes={routesData.routes}
+          routes={chapter.routes}
           addRoute={async (route: Route) => {
-            await CreateRoute(route, chapter_id as string, chapter);
-            invalidateChapter();
-            invalidateRoutes();
+            const update = AddRouteToChapter(chapter, route);
+            chapterMutation.mutate(update);
           }}
           chapter_id={chapter_id as string}
           deleteRoute={async (route: Route) => {

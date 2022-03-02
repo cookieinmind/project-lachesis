@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 /**
  * Constructed of chapters
  */
@@ -17,15 +19,27 @@ export type Chapter = {
   initialSetup: iFork | Destination;
   title: string;
   chapterNumber: number;
-  routes_ids: string[];
+  routes: Route[];
   storyTitle: string;
 };
 
 export type Route = {
-  chapter_id: string;
+  id: string;
   text: string;
   fork: iFork;
 };
+
+// export class Route {
+//   constructor(text: string = '', fork?: iFork) {
+//     this.id = uuidv4();
+//     this.text = text;
+//     this.fork = fork;
+//   }
+
+//   id: string;
+//   text: string;
+//   fork: iFork;
+// }
 
 /**
  * Connects a route to multiple ones
