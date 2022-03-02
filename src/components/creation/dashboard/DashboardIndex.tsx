@@ -35,7 +35,7 @@ export default function DashboardIndex({
     let highestNumber: number = 1;
     chaptersData.chapters.map((c) => {
       console.log(c);
-      if (highestNumber < c.chapterNumber) {
+      if (highestNumber <= c.chapterNumber) {
         highestNumber = c.chapterNumber + 1;
       }
     });
