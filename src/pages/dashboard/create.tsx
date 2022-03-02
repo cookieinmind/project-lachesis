@@ -12,9 +12,11 @@ export default function CreateStory() {
   const router = useRouter();
 
   async function createStory() {
+    let uid: string = user?.uid;
     if (!user) {
       const u = await signInAnon();
       console.log(u);
+      uid = u.uid;
       //create a user file.
       const userModel: PublicUserData = {
         username: `anon`,
@@ -26,7 +28,7 @@ export default function CreateStory() {
     const story: Story = {
       title,
       description: '',
-      author_uid: user.uid,
+      author_uid: uid,
       chapters_ids: [],
       tutorialFinished: false,
     };
