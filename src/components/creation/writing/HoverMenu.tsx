@@ -3,6 +3,7 @@ import React from 'react';
 export type iHoverMenuItem = {
   text: string;
   onClick: () => void;
+  disabled: boolean;
 };
 
 export function HoverMenu({
@@ -39,8 +40,10 @@ export function HoverMenu({
 function HoverMenuItem({ menuItem }: { menuItem: iHoverMenuItem }) {
   return (
     <button
-      className="w-full py-6 px-8 bg-onSurface text-surface hover:bg-surface hover:text-onSurface"
+      className="w-full py-6 px-8 bg-onSurface text-surface hover:bg-surface hover:text-onSurface 
+      disabled:opacity-50 disabled:hover:bg-onSurface disabled:hover:text-surface"
       onClick={menuItem.onClick}
+      disabled={menuItem.disabled}
     >
       {menuItem.text}
     </button>

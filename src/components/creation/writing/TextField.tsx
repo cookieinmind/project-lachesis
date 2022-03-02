@@ -45,7 +45,9 @@ export default function TextField({
   return (
     <div className="relative z-0 w-full">
       <TextareaAutosize
-        className="w-full borde bg-transparent h-full focus:ring-0 border-0 border-none resize-none"
+        className={`w-full borde bg-transparent h-full focus:ring-0 border-0 border-none resize-none
+          ${showMenu ? 'opacity-50 underline' : ''}
+        `}
         value={text}
         placeholder={placeholder}
         onChange={(e) => {
@@ -59,13 +61,22 @@ export default function TextField({
       <HoverMenu
         hide={() => setShowMenu(false)}
         menuItems={[
-          { text: 'test', onClick: () => setShowMenu(false) },
-          { text: 'test', onClick: () => setShowMenu(false) },
+          {
+            text: "add to character's dialogue",
+            onClick: () => setShowMenu(false),
+            disabled: true,
+          },
+          {
+            text: 'add check',
+            onClick: () => setShowMenu(false),
+            disabled: true,
+          },
           ,
-          { text: 'test', onClick: () => setShowMenu(false) },
-          { text: 'test', onClick: () => setShowMenu(false) },
-          ,
-          { text: 'test', onClick: () => setShowMenu(false) },
+          {
+            text: 'add option',
+            onClick: () => setShowMenu(false),
+            disabled: false,
+          },
         ]}
         shouldBeVisible={showMenu}
       />
