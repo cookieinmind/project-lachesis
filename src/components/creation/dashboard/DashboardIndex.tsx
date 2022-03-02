@@ -3,11 +3,18 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import {
   AddNewChapter,
+  CreateRoute,
   GetChapters,
   UpdateStory,
 } from '@/firebase/FirebaseMethods';
 import { DashboardRoutes, GetChapterRoute } from '@/models/Routers';
-import { Chapter, Connection, Destination, Story } from '@/models/ServerModels';
+import {
+  Chapter,
+  Connection,
+  Destination,
+  Route,
+  Story,
+} from '@/models/ServerModels';
 
 export default function DashboardIndex({
   story,
@@ -21,7 +28,7 @@ export default function DashboardIndex({
   close: () => void;
 }) {
   const router = useRouter();
-  const { data: chaptersData } = useQuery(['chapters of story', story_id], () =>
+  const { data: chaptersData } = useQuery(['story chapters', story_id], () =>
     GetChapters(story_id)
   );
 
@@ -53,7 +60,21 @@ export default function DashboardIndex({
     const chapter_id = await AddNewChapter(chapter);
     story = { ...story, chapters_ids: [...story.chapters_ids, chapter_id] };
 
-    await UpdateStory(story_id, story);
+    const chapterInitialRoute: Route = {
+      text: '',
+      fork: null,
+      chapter_id: chapter_id,
+    };
+
+    //Update the story and route
+    const promises: Promise<void>[] = [
+      UpdateStory(story_id, story),
+      CreateRoute(chapterInitialRoute, chapter_id, chapter),
+    ];
+
+    await Promise.all(promises);
+    // await UpdateStory(story_id, story);
+    // await CreateRoute(chapterInitialRoute, chapter_id, chapter);
 
     //3. redirect to the chapter editor page
     const link = GetChapterRoute(chapter_id, story_id);
