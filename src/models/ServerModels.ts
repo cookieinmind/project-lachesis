@@ -16,7 +16,6 @@ export type Story = {
  */
 export type Chapter = {
   story_id: string;
-  initialSetup: iFork | Destination;
   title: string;
   chapterNumber: number;
   routes: Route[];

@@ -7,7 +7,6 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { GetChapter, UpdateChapter } from '@/firebase/FirebaseMethods';
 import { Chapter, Route } from '@/models/ServerModels';
 import { Loading } from '@/components/utilis/Loading';
-import TextField from '@/components/creation/writing/TextField';
 import RouterEditor from '@/components/creation/writing/RouterEditor';
 import { AddRouteToChapter } from '@/models/ChapterHelpers';
 

@@ -9,7 +9,7 @@ import {
   getDocs,
   updateDoc,
 } from 'firebase/firestore';
-import { Chapter, PublicUserData, Route, Story } from '@/models/ServerModels';
+import { PublicUserData, Story, Chapter } from '@/models/ServerModels';
 import { Collections } from './References';
 import { firestore as db } from './firebase_config';
 
@@ -151,5 +151,5 @@ export async function UpdateChapter(
 ): Promise<void> {
   const chaptesCol = collection(db, Collections.Chapters);
   const chapRef = doc(chaptesCol, chapter_id);
-  await updateDoc(chapRef, chapter);
+  await updateDoc(chapRef, { ...chapter });
 }

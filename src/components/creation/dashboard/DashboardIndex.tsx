@@ -3,13 +3,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { AddNewChapter, GetChapters } from '@/firebase/FirebaseMethods';
 import { GetChapterRoute } from '@/models/Routers';
-import {
-  Chapter,
-  Connection,
-  Destination,
-  Route,
-  Story,
-} from '@/models/ServerModels';
+import { Chapter, Story } from '@/models/ServerModels';
 import { CreateRoute } from '@/models/ChapterHelpers';
 
 export default function DashboardIndex({
@@ -30,11 +24,6 @@ export default function DashboardIndex({
 
   async function manageNewChapterCreation() {
     //1. create the chapter
-    const dest: Destination = {
-      connectsTo: Connection.NewRoute,
-      thingItConnectsTo_id: '',
-    };
-
     let highestNumber: number = 1;
     chaptersData.chapters.map((c) => {
       console.log(c);
@@ -49,7 +38,6 @@ export default function DashboardIndex({
       title: `chapter ${highestNumber}`,
       chapterNumber: highestNumber,
       story_id,
-      initialSetup: dest,
       routes: [chapterInitialRoute],
       storyTitle: story.title,
     };
@@ -92,7 +80,6 @@ export default function DashboardIndex({
                 <ChapterItem
                   chapter={c}
                   key={c.title + i}
-                  chapter_id={chaptersData.ids[i]}
                   chapterLink={GetChapterRoute(chaptersData.ids[i], story_id)}
                 />
               );
@@ -115,11 +102,9 @@ export default function DashboardIndex({
 
 function ChapterItem({
   chapter,
-  chapter_id,
   chapterLink,
 }: {
   chapter: Chapter;
-  chapter_id: string;
   chapterLink: string;
 }) {
   const router = useRouter();
