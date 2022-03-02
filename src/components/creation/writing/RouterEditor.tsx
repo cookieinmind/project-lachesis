@@ -31,10 +31,8 @@ export default function RouterEditor({
   );
 
   useEffect(() => {
-    console.log(routes);
     if (routes.length === 0 && !createdOne.current) {
       createdOne.current = true;
-      console.log('decided to create one');
       CreateAndFocus(true);
     }
   }, [routes, CreateAndFocus]);
@@ -50,9 +48,8 @@ export default function RouterEditor({
             updateText={(text: string) => {
               //save the text inside the route obj
               route.text = text;
-              console.log(route);
             }}
-            onEnter={CreateAndFocus}
+            createNewOne={CreateAndFocus}
           />
         );
       })}
