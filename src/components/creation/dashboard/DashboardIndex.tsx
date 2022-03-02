@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { AddNewChapter, GetChapters } from '@/firebase/FirebaseMethods';
 import { GetChapterRoute } from '@/models/Routers';
@@ -22,7 +22,10 @@ export default function DashboardIndex({
     GetChapters(story_id)
   );
 
+  const [isCreating, setIsCreating] = useState<boolean>(false);
+
   async function manageNewChapterCreation() {
+    setIsCreating(true);
     //1. create the chapter
     let highestNumber: number = 1;
     chaptersData.chapters.map((c) => {
@@ -47,6 +50,7 @@ export default function DashboardIndex({
     story = { ...story, chapters_ids: [...story.chapters_ids, chapter_id] };
 
     //3. redirect to the chapter editor page
+    setIsCreating(false);
     const link = GetChapterRoute(chapter_id, story_id);
     router.push(link);
   }
@@ -89,10 +93,12 @@ export default function DashboardIndex({
 
         <div className="h-full w-full flex items-end">
           <button
-            className="w-full py-2 rounded-xl border-2"
+            className="w-full py-2 rounded-xl border-2 disabled:border-opacity-50"
             onClick={manageNewChapterCreation}
+            disabled={isCreating}
           >
-            + new chapter
+            {!isCreating && <span>+ new chapter</span>}
+            {isCreating && <span className="animate-pulse">creating...</span>}
           </button>{' '}
         </div>
       </aside>

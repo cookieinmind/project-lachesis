@@ -22,15 +22,6 @@ const tutorialPoints: TutorialPoint[] = [
   },
 ];
 
-/**
- * Interface params through which the route is updated
- */
-interface iRouteMutationParams {
-  route_id: string;
-  routeUpdate: Route;
-  chapterUpdate: Chapter;
-}
-
 export default function ChapterEditor() {
   //*Router
   const router = useRouter();
