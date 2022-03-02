@@ -18,26 +18,30 @@ export default function RouterEditor({
 }) {
   const createdOne = useRef<boolean>(false);
 
-  const CreateAndFocus = useCallback(async () => {
-    //Create a new route
-    const newRoute: Route = {
-      chapter_id: chapter_id,
-      text: '',
-      fork: null,
-    };
+  const CreateAndFocus = useCallback(
+    async (firstOne: boolean = false) => {
+      //Create a new route
+      const newRoute: Route = {
+        chapter_id: chapter_id,
+        text: '',
+        fork: null,
+        firstOne,
+      };
 
-    //added to the list
-    await addRoute(newRoute);
+      //added to the list
+      await addRoute(newRoute);
 
-    //make the app focus on the new component
-  }, [addRoute, chapter_id]);
+      //make the app focus on the new component
+    },
+    [addRoute, chapter_id]
+  );
 
   useEffect(() => {
     console.log(routes);
     if (routes.length === 0 && !createdOne.current) {
       createdOne.current = true;
       console.log('decided to create one');
-      CreateAndFocus();
+      CreateAndFocus(true);
     }
   }, [routes, CreateAndFocus]);
 

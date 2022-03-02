@@ -14,7 +14,8 @@ export type Story = {
  */
 export type Chapter = {
   story_id: string;
-  initialSetup: iFork | Destination;
+  //TODO: leave the initial setup for later, is not part of MVP
+  // initialSetup: iFork | Destination;
   title: string;
   chapterNumber: number;
   routes_ids: string[];
@@ -25,6 +26,7 @@ export type Route = {
   chapter_id: string;
   text: string;
   fork: iFork;
+  firstOne: boolean;
 };
 
 /**

@@ -66,13 +66,10 @@ export default function CreationDashboard() {
   const [tutIndex, setTutIndex] = useState<number>(0);
 
   useEffect(() => {
-    console.log(story);
     if (!story) return;
 
     const isFinishedOnServer = story.tutorialFinished;
     const isFinishedOnClient = tutIndex === tutorialPoints.length - 1;
-
-    // console.log(isFinishedOnClient, isFinishedOnServer);
 
     if (isFinishedOnClient && !isFinishedOnServer) {
       //Update server

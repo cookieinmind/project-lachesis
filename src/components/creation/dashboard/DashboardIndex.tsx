@@ -5,6 +5,7 @@ import {
   AddNewChapter,
   CreateRoute,
   GetChapters,
+  UpdateChapter,
   UpdateStory,
 } from '@/firebase/FirebaseMethods';
 import { DashboardRoutes, GetChapterRoute } from '@/models/Routers';
@@ -51,9 +52,8 @@ export default function DashboardIndex({
       title: `chapter ${highestNumber}`,
       chapterNumber: highestNumber,
       story_id,
-      initialSetup: dest,
-      routes_ids: [],
       storyTitle: story.title,
+      routes_ids: [],
     };
 
     //2 save it in db
@@ -64,6 +64,7 @@ export default function DashboardIndex({
       text: '',
       fork: null,
       chapter_id: chapter_id,
+      firstOne: true,
     };
 
     //Update the story and route
