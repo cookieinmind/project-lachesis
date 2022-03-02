@@ -79,15 +79,17 @@ export default function DashboardIndex({
         {/* chapters */}
         {chaptersData && (
           <div className="flex flex-col gap-2">
-            {chaptersData.chapters.map((c, i) => {
-              return (
-                <ChapterItem
-                  chapter={c}
-                  key={c.title + i}
-                  chapterLink={GetChapterRoute(chaptersData.ids[i], story_id)}
-                />
-              );
-            })}
+            {chaptersData.chapters
+              .sort((a, b) => a.chapterNumber - b.chapterNumber)
+              .map((c, i) => {
+                return (
+                  <ChapterItem
+                    chapter={c}
+                    key={c.title + i}
+                    chapterLink={GetChapterRoute(chaptersData.ids[i], story_id)}
+                  />
+                );
+              })}
           </div>
         )}
 
