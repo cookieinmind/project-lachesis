@@ -4,14 +4,8 @@ import { TutorialPoint } from '@/models/client/Creation';
 import { TutorialPointsDisplayer } from '@/components/tutorials/TutorialShower';
 import Layout from '@/components/Layout';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import {
-  CreateRoute,
-  GetChapter,
-  GetRoutesWithIds,
-  UpdateChapter,
-  UpdateRoute,
-} from '@/firebase/FirebaseMethods';
-import { Chapter, Route } from '@/models/ServerModels';
+import { GetChapter, UpdateChapter } from '@/firebase/FirebaseMethods';
+import { Chapter, ChapterType, Route } from '@/models/ServerModels';
 import { Loading } from '@/components/utilis/Loading';
 import TextField from '@/components/creation/writing/TextField';
 import RouterEditor from '@/components/creation/writing/RouterEditor';
@@ -61,29 +55,16 @@ export default function ChapterEditor() {
     }
   );
 
-  const { data: routesData } = useQuery(
-    ROUTES_QUERY,
-    () => GetRoutesWithIds(chapter_id as string),
-    {
-      enabled: !!chapter_id,
-      onSuccess: () => console.log('updated routes'),
-      onError: (e) => console.error(e),
-    }
-  );
-
   //*Mutations
-  const chapterMutation = useMutation((update: Chapter) => {
-    return UpdateChapter(chapter_id as string, update);
-  });
-
-  const routeUpdateMutation = useMutation(
-    ({ route_id, routeUpdate, chapterUpdate }: iRouteMutationParams) => {
-      return UpdateRoute(
-        route_id,
-        routeUpdate,
-        chapter_id as string,
-        chapterUpdate
-      );
+  const chapterMutation = useMutation(
+    (update: Chapter) => {
+      return UpdateChapter(chapter_id as string, update);
+    },
+    {
+      onSuccess: () => {
+        invalidateChapter();
+        invalidateRoutes();
+      },
     }
   );
 
@@ -130,11 +111,10 @@ export default function ChapterEditor() {
 
       {beginExample && (
         <RouterEditor
-          routes={routesData.routes}
+          routes={chapter.routes}
           addRoute={async (route: Route) => {
-            await CreateRoute(route, chapter_id as string, chapter);
-            invalidateChapter();
-            invalidateRoutes();
+            chapter.addRoute(route);
+            chapterMutation.mutate(chapter);
           }}
           chapter_id={chapter_id as string}
           deleteRoute={async (route: Route) => {

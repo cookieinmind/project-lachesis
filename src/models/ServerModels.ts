@@ -12,21 +12,97 @@ export type Story = {
 /**
  * Constructed of routes and forks
  */
-export type Chapter = {
+export type ChapterType = {
   story_id: string;
   //TODO: leave the initial setup for later, is not part of MVP
   // initialSetup: iFork | Destination;
   title: string;
   chapterNumber: number;
-  routes_ids: string[];
+  routes: Route[];
   storyTitle: string;
 };
 
+export class Chapter {
+  constructor(
+    story_id: string,
+    title: string,
+    routes: Route[],
+    storyTitle: string,
+    chapterNumber: number
+  ) {
+    this.storyTitle = storyTitle;
+    this.title = title;
+    this.routes = routes;
+    this.story_id = story_id;
+    this.chapterNumber = chapterNumber;
+  }
+
+  //*Methods
+  addRoute(route: Route) {}
+
+  deleteRoute(route: Route) {}
+
+  //TODO: leave the initial setup for later, is not part of MVP
+  // initialSetup: iFork | Destination;
+
+  //!Accesors
+  //Story title
+  get storyTitle(): string {
+    return this._storyTitle;
+  }
+
+  private set storyTitle(newTitle: string) {
+    this._storyTitle = newTitle;
+  }
+
+  //Story id
+  get story_id(): string {
+    return this._story_id;
+  }
+
+  private set story_id(newId: string) {
+    this._story_id = newId;
+  }
+
+  //Title
+  get title(): string {
+    return this._title;
+  }
+
+  private set title(newTitle: string) {
+    this._title = newTitle;
+  }
+
+  //Chapter num
+  get chapterNumber(): number {
+    return this._chapterNumber;
+  }
+
+  private set chapterNumber(num: number) {
+    this._chapterNumber = num;
+  }
+
+  //Routes
+  get routes(): Route[] {
+    return this._routes;
+  }
+
+  private set routes(newRoutes: Route[]) {
+    this._routes = newRoutes;
+  }
+
+  //!Fields
+  private _routes: Route[];
+  private _title: string;
+  private _storyTitle: string;
+  private _story_id: string;
+  private _chapterNumber: number;
+}
+
 export type Route = {
-  chapter_id: string;
   text: string;
   fork: iFork;
-  firstOne: boolean;
+  index: number;
 };
 
 /**

@@ -9,7 +9,13 @@ import {
   getDocs,
   updateDoc,
 } from 'firebase/firestore';
-import { Chapter, PublicUserData, Route, Story } from '@/models/ServerModels';
+import {
+  ChapterType,
+  PublicUserData,
+  Route,
+  Story,
+  Chapter,
+} from '@/models/ServerModels';
 import { Collections } from './References';
 import { firestore as db } from './firebase_config';
 
@@ -101,14 +107,19 @@ export async function UpdateStory(
  * @param chapter chapter to add to the db
  * @returns the id of the saved chapter
  */
-export async function AddNewChapter(chapter: Chapter): Promise<string> {
+export async function AddNewChapter(
+  chapter: Chapter,
+  story_id: string,
+  story: Story
+): Promise<string> {
   const chapters = collection(db, Collections.Chapters);
-  try {
-    const docReference = await addDoc(chapters, chapter);
-    return docReference.id;
-  } catch (error) {
-    throw error;
-  }
+  const { id } = await addDoc(chapters, { ...chapter });
+
+  //update the story
+  const updatedChapters = { ...story.chapters_ids, id };
+  const storyUpdate: Story = { ...story, chapters_ids: updatedChapters };
+  await UpdateStory(story_id, storyUpdate);
+  return id;
 }
 
 export async function GetChapters(
@@ -145,64 +156,5 @@ export async function UpdateChapter(
 ): Promise<void> {
   const chaptesCol = collection(db, Collections.Chapters);
   const chapRef = doc(chaptesCol, chapter_id);
-  await updateDoc(chapRef, chapter);
-}
-
-// ! routes
-export async function GetRoutesWithIds(
-  chapter_id: string
-): Promise<{ routes: Route[]; ids: string[] }> {
-  const routesCol = collection(db, Collections.Routes);
-
-  const q = query(routesCol, where('chapter_id', '==', chapter_id));
-
-  const docs = await getDocs(q);
-
-  const routes: Route[] = [];
-  const ids: string[] = [];
-
-  docs.forEach((d) => {
-    const r = d.data() as Route;
-    routes.push(r);
-    ids.push(d.id);
-  });
-
-  return { routes, ids };
-}
-
-export async function UpdateRoute(
-  route_id: string,
-  route: Route,
-  chapter_id: string,
-  chapter: Chapter
-): Promise<void> {
-  const chaptesCol = collection(db, Collections.Chapters);
-
-  const chapRef = doc(chaptesCol, chapter_id);
-
-  const routesCol = collection(db, Collections.Routes);
-  const routeRef = doc(routesCol, route_id);
-
-  await updateDoc(chapRef, chapter);
-  await updateDoc(routeRef, route);
-}
-
-export async function CreateRoute(
-  route: Route,
-  chapter_id: string,
-  chapter: Chapter
-) {
-  const chaptesCol = collection(db, Collections.Chapters);
-
-  const chapRef = doc(chaptesCol, chapter_id);
-
-  const routesCol = collection(db, Collections.Routes);
-
-  const { id } = await addDoc(routesCol, route);
-
-  const chapterUpdate = {
-    ...chapter,
-    routes_ids: { ...chapter.routes_ids, id },
-  };
-  await updateDoc(chapRef, chapterUpdate);
+  await updateDoc(chapRef, { ...chapter });
 }

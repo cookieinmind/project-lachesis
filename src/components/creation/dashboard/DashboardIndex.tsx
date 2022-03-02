@@ -3,14 +3,13 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import {
   AddNewChapter,
-  CreateRoute,
   GetChapters,
-  UpdateChapter,
   UpdateStory,
 } from '@/firebase/FirebaseMethods';
 import { DashboardRoutes, GetChapterRoute } from '@/models/Routers';
 import {
   Chapter,
+  ChapterType,
   Connection,
   Destination,
   Route,
@@ -35,11 +34,6 @@ export default function DashboardIndex({
 
   async function manageNewChapterCreation() {
     //1. create the chapter
-    const dest: Destination = {
-      connectsTo: Connection.NewRoute,
-      thingItConnectsTo_id: '',
-    };
-
     let highestNumber: number = 1;
     chaptersData.chapters.map((c) => {
       console.log(c);
@@ -48,34 +42,27 @@ export default function DashboardIndex({
       }
     });
 
-    const chapter: Chapter = {
-      title: `chapter ${highestNumber}`,
-      chapterNumber: highestNumber,
-      story_id,
-      storyTitle: story.title,
-      routes_ids: [],
-    };
-
-    //2 save it in db
-    const chapter_id = await AddNewChapter(chapter);
-    story = { ...story, chapters_ids: [...story.chapters_ids, chapter_id] };
-
     const chapterInitialRoute: Route = {
       text: '',
       fork: null,
-      chapter_id: chapter_id,
-      firstOne: true,
+      index: 0,
     };
 
-    //Update the story and route
-    const promises: Promise<void>[] = [
-      UpdateStory(story_id, story),
-      CreateRoute(chapterInitialRoute, chapter_id, chapter),
-    ];
+    const chapTitle = `chapter ${highestNumber}`;
+    const routes = [chapterInitialRoute];
+    const storyTitle = story.title;
+    const chapter = new Chapter(
+      story_id,
+      chapTitle,
+      routes,
+      storyTitle,
+      highestNumber
+    );
 
-    await Promise.all(promises);
-    // await UpdateStory(story_id, story);
-    // await CreateRoute(chapterInitialRoute, chapter_id, chapter);
+    //2 save it in db
+    console.log(chapter);
+    const chapter_id = await AddNewChapter(chapter, story_id, story);
+    story = { ...story, chapters_ids: [...story.chapters_ids, chapter_id] };
 
     //3. redirect to the chapter editor page
     const link = GetChapterRoute(chapter_id, story_id);
@@ -137,7 +124,7 @@ function ChapterItem({
   chapter_id,
   chapterLink,
 }: {
-  chapter: Chapter;
+  chapter: ChapterType;
   chapter_id: string;
   chapterLink: string;
 }) {
