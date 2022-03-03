@@ -75,13 +75,7 @@ export default function RouterEditor({
       </div>
 
       {/* HERE */}
-      {menuItems && (
-        <HoverMenu
-          menuItems={menuItems}
-          showMenu={!!menuItems}
-          hide={HidePortal}
-        />
-      )}
+      <HoverMenu menuItems={menuItems} hide={HidePortal} />
     </div>
   );
 }

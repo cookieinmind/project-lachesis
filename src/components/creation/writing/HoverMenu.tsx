@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Modal from '@/components/utilis/Modal';
 import { useModal } from '@/context/ModalContextProvider';
 
@@ -10,18 +10,24 @@ export type iHoverMenuItem = {
 
 export function HoverMenu({
   menuItems,
-  showMenu,
   hide,
 }: {
-  menuItems: iHoverMenuItem[];
-  showMenu: boolean;
+  menuItems: iHoverMenuItem[] | undefined;
   hide: () => void;
 }) {
+  const [show, setShow] = useState<boolean>(false);
+
+  useEffect(() => {
+    setShow(!!menuItems);
+  }, [menuItems]);
+
+  const visible = show ? 'visible' : 'invisible';
+
   return (
     <Modal>
-      <div className="fixed inset-0 z-0" id="container">
+      <div className={`fixed inset-0 z-0 ${visible}`}>
         <div
-          className="fixed inset-0 bg-onSurface opacity-50 cursor-pointer"
+          className={`fixed inset-0 bg-onSurface opacity-50 cursor-pointer ${visible}`}
           onClick={hide}
         />
 
@@ -32,14 +38,14 @@ export function HoverMenu({
                    h-fit w-10/12
                    transition-all duration-150 ease-in-out
                    ${
-                     showMenu
+                     show
                        ? 'visible opacity-100 scale-100'
                        : 'invisible opacity-0 scale-75'
                    }
 
                     `}
         >
-          {menuItems.map((item, i) => {
+          {menuItems?.map((item, i) => {
             return <HoverMenuItem key={i} menuItem={item} />;
           })}
         </div>

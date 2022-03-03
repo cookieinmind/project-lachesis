@@ -54,7 +54,7 @@ export default function TextField({
       text: 'add option',
       onClick: () => {
         createNewOne();
-        // setShowMenu(false);
+        hidePortal();
       },
       disabled: false,
     },
