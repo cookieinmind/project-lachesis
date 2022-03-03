@@ -101,16 +101,20 @@ export default function ChapterEditor() {
           </div>
         </button>
 
-        {isSaving && <span className="material-icons animate-pulse">sync</span>}
-        {!isSaving && (
-          <span className="material-icons opacity-30">cloud_done</span>
-        )}
+        <div className="mr-4">
+          {isSaving && (
+            <span className="material-icons animate-spin opacity-30">sync</span>
+          )}
+          {!isSaving && (
+            <span className="material-icons opacity-30">cloud_done</span>
+          )}
+        </div>
 
-        <span
+        {/* <span
           className={`material-icons text-4xl transition-opacity ease-in-out duration-500 `}
         >
           style
-        </span>
+        </span> */}
       </nav>
 
       {!beginExample && (

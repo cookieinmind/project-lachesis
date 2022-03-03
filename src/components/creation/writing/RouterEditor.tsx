@@ -52,40 +52,42 @@ export default function RouterEditor({
     setMenuItems(undefined);
   }
 
-  function SaveChanges() {
-    //!THE ORDER MATTERS
-    saveChanges(routes);
-    setUnsavedChanges(false);
-  }
-
   //*Effects
 
-  // useEffect(() => {
-  //   if (routes.length === 0 && !createdOne.current) {
-  //     createdOne.current = true;
-  //     CreateAndFocus();
-  //   }
-  // }, [routes, CreateAndFocus]);
+  const SaveChangesRef = useRef<() => void>();
+  SaveChangesRef.current = () => {
+    if (!unsavedChanges) return;
+    //!THE ORDER MATTERS
+    console.log('[S] CALLING SERVER');
+    setUnsavedChanges(false);
+    saveChanges(routes);
+  };
 
   useEffect(() => {
-    if (!unsavedChanges) return;
-
-    console.log('[ ] - timer start');
-    let autoSaveTimer = window.setTimeout(() => {
+    if (!unsavedChanges) {
+      return;
+    }
+    const saveChanges = SaveChangesRef.current;
+    let wasSaved = false; //useState is not fast enough.
+    console.log('[>] ENTERING EFFECT');
+    let autoSaveTimer = setTimeout(() => {
       //check if there's been any changes
       if (unsavedChanges) {
         //if they are, save them
-        SaveChanges();
+        saveChanges();
+        wasSaved = true;
       }
     }, AUTOSAVE_DELAY * 1000);
 
     return () => {
-      console.log('[X] OUT OF AUTOSAVE EFFECT');
-      window.clearTimeout(autoSaveTimer);
+      console.log('[<] EXITING EFFECT - Saved changes? :', wasSaved);
+      clearTimeout(autoSaveTimer);
       //AND SAVE!
-      if (unsavedChanges) SaveChanges();
+      if (wasSaved === false) {
+        saveChanges();
+      }
     };
-  }, [saveChanges, unsavedChanges]);
+  }, [SaveChangesRef, unsavedChanges]);
 
   return (
     <div className="relative w-full">
@@ -100,7 +102,9 @@ export default function RouterEditor({
                 //compare new vs old text!
                 if (route.text !== text) {
                   route.text = text;
-                  setUnsavedChanges(true);
+                  if (unsavedChanges === false) {
+                    setUnsavedChanges(true);
+                  }
                 }
               }}
               createNewOne={CreateAndFocus}
