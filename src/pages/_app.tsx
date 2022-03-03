@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }) {
     return (
       <>
         <Head>
-          <title>Creator</title>
+          <title>{process.env.NEXT_PUBLIC_PROJECT_NAME}</title>
         </Head>
         <AuthContextProvider>
           <QueryClientProvider client={queryClient}>

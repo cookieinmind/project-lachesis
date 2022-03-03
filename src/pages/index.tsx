@@ -11,7 +11,9 @@ export default function Home() {
   return (
     <div className="h-full center flex-col gap-16">
       <div className="flex flex-col items-center gap-8">
-        <h1 className="text-3xl">Welcome to creator</h1>
+        <h1 className="text-3xl">
+          Welcome to {process.env.NEXT_PUBLIC_PROJECT_NAME}
+        </h1>
         <h2 className="opacity-50">{'find a story >'}</h2>
         <Link href={DashboardRoutes.Create}>{'create a story >'}</Link>
         {user && <Link href={MainRoutes.dashboard}>{'your dashboard >'}</Link>}
