@@ -1,7 +1,8 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useLongPress } from 'use-long-press';
 import TextareaAutosize from 'react-textarea-autosize';
-import { HoverMenu } from './HoverMenu';
+import { iHoverMenuItem } from './HoverMenu';
+// import { HoverMenu } from './HoverMenu';
 
 //TODO:
 /**
@@ -13,38 +14,39 @@ import { HoverMenu } from './HoverMenu';
  * 3) everytime a component is created or deleted, it must be saved in the cloud
  */
 
+interface iTextFieldParams {
+  placeholder: string;
+  createNewOne: () => void;
+  initialText?: string;
+  updateText: (text: string) => void;
+  openPortal: (menuItems: iHoverMenuItem[]) => void;
+  hidePortal: () => void;
+}
+
 export default function TextField({
   createNewOne,
   initialText,
   updateText,
   placeholder,
-}: {
-  placeholder: string;
-  createNewOne: () => void;
-  initialText?: string;
-  updateText: (text: string) => void;
-}) {
+  openPortal,
+  hidePortal,
+}: iTextFieldParams) {
   const [text, setText] = useState<string>(initialText ? initialText : '');
-  const [showMenu, setShowMenu] = useState<boolean>(false);
+  // const [showMenu, setShowMenu] = useState<boolean>(false);
 
   const longPress = useLongPress(() => {
-    setShowMenu(true);
+    openPortal(menuItems);
   }, {});
 
-  const hideMenu = useCallback(() => {
-    console.log('!');
-    setShowMenu(false);
-  }, []);
-
-  const menus = [
+  const menuItems: iHoverMenuItem[] = [
     {
       text: "add to character's dialogue",
-      onClick: () => setShowMenu(false),
+      onClick: hidePortal,
       disabled: true,
     },
     {
       text: 'add check',
-      onClick: () => setShowMenu(false),
+      onClick: hidePortal,
       disabled: true,
     },
     ,
@@ -58,7 +60,7 @@ export default function TextField({
     },
     {
       text: 'close it!',
-      onClick: hideMenu,
+      onClick: hidePortal,
       disabled: false,
     },
   ];
@@ -67,7 +69,7 @@ export default function TextField({
     <div className="relative z-0 w-full">
       <TextareaAutosize
         className={`w-full z-10 borde bg-transparent h-full focus:ring-0 border-0 border-none resize-none
-          ${showMenu ? 'opacity- underline' : ''}
+          ${false ? 'opacity- underline' : ''}
         `}
         value={text}
         placeholder={placeholder}
@@ -79,7 +81,7 @@ export default function TextField({
         {...longPress}
       />
 
-      <HoverMenu menuItems={menus} showMenu={showMenu} hide={hideMenu} />
+      {/* <HoverMenu menuItems={menus} showMenu={showMenu} hide={hideMenu} /> */}
     </div>
   );
 }

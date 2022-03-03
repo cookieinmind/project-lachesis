@@ -17,16 +17,16 @@ export function HoverMenu({
   showMenu: boolean;
   hide: () => void;
 }) {
-  // const { isModalOn, setIsModalOn } = useModal();
-
-  // useEffect(() => {
-  //   console.log('effect');
-  //   setIsModalOn(showMenu);
-  // }, [showMenu, setIsModalOn]);
-
   return (
-    <div
-      className={`absolute left-[50%] translate-x-[-50%] top-[50%] z-20
+    <Modal>
+      <div className="fixed inset-0 z-0" id="container">
+        <div
+          className="fixed inset-0 bg-onSurface opacity-50 cursor-pointer"
+          onClick={hide}
+        />
+
+        <div
+          className={`absolute left-[50%] translate-x-[-50%] top-[50%] translate-y-[-75%]  z-20
                    flex flex-col
                  bg-onSurface text-surface drop-shadow-xl rounded-lg overflow-hidden
                    h-fit w-10/12
@@ -38,11 +38,13 @@ export function HoverMenu({
                    }
 
                     `}
-    >
-      {menuItems.map((item, i) => {
-        return <HoverMenuItem key={i} menuItem={item} />;
-      })}
-    </div>
+        >
+          {menuItems.map((item, i) => {
+            return <HoverMenuItem key={i} menuItem={item} />;
+          })}
+        </div>
+      </div>
+    </Modal>
   );
 }
 
