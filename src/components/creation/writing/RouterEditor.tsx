@@ -1,22 +1,34 @@
-import Modal from '@/components/utilis/Modal';
 import { CreateRoute } from '@/models/ChapterHelpers';
 import { Route } from '@/models/ServerModels';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { HoverMenu, iHoverMenuItem } from './HoverMenu';
 import TextField from './TextField';
 
+/**
+ * In seconds*
+ */
+const AUTOSAVE_DELAY = 5;
+
 const dummyText =
   'Shallan, a minor lighteyed woman whose family and lands are in danger, hatches a daring plot to switch a broken Soulcaster (a device that allows people to change objects to other things) with a working one belonging to Jasnah Kholin, sister of the Alethi king.';
+
+interface iRouteEditorParams {
+  routes: Route[];
+  addRoute: (route: Route) => Promise<void>;
+  deleteRoute: (route: Route) => Promise<void>;
+  saveChanges: (routes: Route[]) => void;
+  unsavedChanges: boolean;
+  setUnsavedChanges: (newVal: boolean) => void;
+}
 
 export default function RouterEditor({
   routes,
   addRoute,
   deleteRoute,
-}: {
-  routes: Route[];
-  addRoute: (route: Route) => Promise<void>;
-  deleteRoute: (route: Route) => Promise<void>;
-}) {
+  saveChanges,
+  unsavedChanges,
+  setUnsavedChanges,
+}: iRouteEditorParams) {
   //*State
   const createdOne = useRef<boolean>(false);
   const [menuItems, setMenuItems] = useState<iHoverMenuItem[]>(undefined);
@@ -40,14 +52,40 @@ export default function RouterEditor({
     setMenuItems(undefined);
   }
 
+  function SaveChanges() {
+    //!THE ORDER MATTERS
+    saveChanges(routes);
+    setUnsavedChanges(false);
+  }
+
   //*Effects
 
+  // useEffect(() => {
+  //   if (routes.length === 0 && !createdOne.current) {
+  //     createdOne.current = true;
+  //     CreateAndFocus();
+  //   }
+  // }, [routes, CreateAndFocus]);
+
   useEffect(() => {
-    if (routes.length === 0 && !createdOne.current) {
-      createdOne.current = true;
-      CreateAndFocus();
-    }
-  }, [routes, CreateAndFocus]);
+    if (!unsavedChanges) return;
+
+    console.log('[ ] - timer start');
+    let autoSaveTimer = window.setTimeout(() => {
+      //check if there's been any changes
+      if (unsavedChanges) {
+        //if they are, save them
+        SaveChanges();
+      }
+    }, AUTOSAVE_DELAY * 1000);
+
+    return () => {
+      console.log('[X] OUT OF AUTOSAVE EFFECT');
+      window.clearTimeout(autoSaveTimer);
+      //AND SAVE!
+      if (unsavedChanges) SaveChanges();
+    };
+  }, [saveChanges, unsavedChanges]);
 
   return (
     <div className="relative w-full">
@@ -59,18 +97,17 @@ export default function RouterEditor({
               key={i}
               initialText={route.text}
               updateText={(text: string) => {
-                //save the text inside the route obj
-                route.text = text;
+                //compare new vs old text!
+                if (route.text !== text) {
+                  route.text = text;
+                  setUnsavedChanges(true);
+                }
               }}
               createNewOne={CreateAndFocus}
               openPortal={OpenPortal}
               hidePortal={HidePortal}
             />
           );
-          //TODO:
-          /**
-           * Move the portal to here and pass a method so that each TextField can call it with its params
-           */
         })}
       </div>
 
