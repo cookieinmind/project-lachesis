@@ -9,6 +9,7 @@ import { Chapter, Route } from '@/models/ServerModels';
 import { Loading } from '@/components/utilis/Loading';
 import RouterEditor from '@/components/creation/writing/RouterEditor';
 import { AddRouteToChapter } from '@/models/ChapterHelpers';
+import { GetStoryRoute } from '@/models/Routers';
 
 const tutorialPoints: TutorialPoint[] = [
   {
@@ -69,7 +70,10 @@ export default function ChapterEditor() {
       <nav className="flex w-full justify-between items-center">
         <button
           className="first-letter:capitalize opacity-50 text-xl flex items-center gap-4"
-          onClick={() => router.back()}
+          onClick={() => {
+            const link = GetStoryRoute(storyId as string);
+            router.push(link);
+          }}
         >
           {'<'}
           <div className="flex flex-col items-start">

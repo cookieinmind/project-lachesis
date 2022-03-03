@@ -106,7 +106,7 @@ export default function CreationDashboard() {
               </span>
             </button>
 
-            <h3 className="first-letter:capitalize opacity-50">
+            <h3 className="first-letter:capitalize opacity-50 w-full text-center px-16 ">
               {story.title}
             </h3>
 
