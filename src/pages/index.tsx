@@ -6,6 +6,7 @@ import Layout from '../components/Layout';
 import { useAuth } from '../context/AuthContextProvider';
 import Image from 'next/image';
 import Shadow from '@/components/utilis/Shadow';
+import { HomeNav } from '@/components/home/HomeNav';
 
 export default function Home() {
   const { user, logOut } = useAuth();
@@ -28,16 +29,14 @@ export default function Home() {
           <p>Get paid for writing</p>
         </div>
       </div>
-
       {photoURL && (
         <figure>
           <Image src={photoURL} width={40} height={40} alt="profile picture" />
         </figure>
       )}
-
       {/* Search bar */}
       <Shadow color="bg-yellow">
-        <div className="absolute left-[50%] translate-x-[-50%] z-10 top-0 flex gap-2 px-4 py-2 items-center rounded-full bg-surface border-[3px] border-onSurface">
+        <div className="flex gap-2 px-4 py-2 items-center rounded-full bg-surface border-[3px] border-onSurface">
           <span className="material-icons">search</span>
           <input
             type="text"
@@ -46,6 +45,8 @@ export default function Home() {
           />
         </div>
       </Shadow>
+
+      <HomeNav />
     </div>
   );
 }

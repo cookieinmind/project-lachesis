@@ -9,18 +9,18 @@ export default function Shadow({
 }) {
   const shadowClass =
     color +
-    ' absolute left-[calc(50%+6px)] translate-x-[calc(-50%-6px)] top-[6px] z-0';
+    ' absolute left-[calc(50%+12px)] translate-x-[calc(-50%-6px)] top-[6px] z-0';
 
   const shadowChildren = React.cloneElement(child, {
     className: `${child.props.className} ${shadowClass}`,
   });
 
   return (
-    <div className="relative w-full mb-[6px]">
+    <div className="relative w-full mb-[6px] center">
       {/* Shadow */}
       {shadowChildren}
       {/* Actual rendering */}
-      <div className="absolute z-10">{child}</div>
+      <div className="absolute z-10 block">{child}</div>
       {/* So the container gets the size of the child */}
       <div className="invisible">{child}</div>
     </div>
