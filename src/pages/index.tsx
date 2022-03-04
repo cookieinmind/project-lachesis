@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContextProvider';
 import Image from 'next/image';
 import Shadow from '@/components/utilis/Shadow';
 import { HomeNav } from '@/components/home/HomeNav';
+import { HomeCard } from '@/components/home/HomeCard';
 
 export default function Home() {
   const { user, logOut } = useAuth();
@@ -47,6 +48,24 @@ export default function Home() {
       </Shadow>
 
       <HomeNav />
+
+      <div className="flex flex-col gap-2">
+        <HomeCard
+          title="Top books"
+          subtitle="check out the top 50 books"
+          bgColor="bg-blue"
+        />
+        <HomeCard
+          title="Top authors"
+          subtitle="Authors with the most readers per month"
+          bgColor="bg-yellow"
+        />
+        <HomeCard
+          title="Create a story"
+          subtitle="Write and get paid"
+          bgColor="bg-salmon"
+        />
+      </div>
     </div>
   );
 }
