@@ -117,27 +117,27 @@ export default function ChapterEditor() {
         </span> */}
       </nav>
 
-      {!beginExample && (
+      {/* {!beginExample && (
         <TutorialPointsDisplayer
           tutorialPoints={tutorialPoints}
           index={tutIndex}
           setIndex={setTutIndex}
           onLastIndex={() => setBeginExample(true)}
         />
-      )}
+      )} */}
 
-      {beginExample && (
-        <RouterEditor
-          saveChanges={saveChanges}
-          unsavedChanges={unsavedChanges}
-          setUnsavedChanges={setUnsavedChanges}
-          routes={chapter.routes}
-          addRoute={addRoute}
-          deleteRoute={async (route: Route) => {
-            console.error('to do: delete route');
-          }}
-        />
-      )}
+      <RouterEditor
+        saveChanges={saveChanges}
+        unsavedChanges={unsavedChanges}
+        setUnsavedChanges={setUnsavedChanges}
+        routes={chapter.routes}
+        addRoute={addRoute}
+        deleteRoute={async (route: Route) => {
+          console.error('to do: delete route');
+        }}
+      />
+      {/* {beginExample && (
+      )} */}
     </div>
   );
 }
