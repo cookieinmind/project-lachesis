@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useLongPress } from 'use-long-press';
 import TextareaAutosize from 'react-textarea-autosize';
+import { iHoverMenuItem } from './HoverMenu';
+// import { HoverMenu } from './HoverMenu';
 
 //TODO:
 /**
@@ -12,40 +14,74 @@ import TextareaAutosize from 'react-textarea-autosize';
  * 3) everytime a component is created or deleted, it must be saved in the cloud
  */
 
+interface iTextFieldParams {
+  placeholder: string;
+  createNewOne: () => void;
+  initialText?: string;
+  updateText: (text: string) => void;
+  openPortal: (menuItems: iHoverMenuItem[]) => void;
+  hidePortal: () => void;
+}
+
 export default function TextField({
-  onEnter,
+  createNewOne,
   initialText,
   updateText,
   placeholder,
-}: {
-  placeholder: string;
-  onEnter: () => void;
-  initialText?: string;
-  updateText: (text: string) => void;
-}) {
+  openPortal,
+  hidePortal,
+}: iTextFieldParams) {
   const [text, setText] = useState<string>(initialText ? initialText : '');
+  // const [showMenu, setShowMenu] = useState<boolean>(false);
 
   const longPress = useLongPress(() => {
-    console.log('long pressed!');
+    openPortal(menuItems);
   }, {});
 
-  function checkForEnter(e: React.KeyboardEvent) {
-    if (e.code === 'Enter') {
-      onEnter();
-    }
-  }
+  const menuItems: iHoverMenuItem[] = [
+    {
+      text: "add to character's dialogue",
+      onClick: hidePortal,
+      disabled: true,
+    },
+    {
+      text: 'add check',
+      onClick: hidePortal,
+      disabled: true,
+    },
+    ,
+    {
+      text: 'add option',
+      onClick: () => {
+        createNewOne();
+        hidePortal();
+      },
+      disabled: false,
+    },
+    {
+      text: 'close it!',
+      onClick: hidePortal,
+      disabled: false,
+    },
+  ];
 
   return (
-    <TextareaAutosize
-      className="w-full borde bg-transparent h-full focus:ring-0 border-2 border-primary"
-      value={text}
-      placeholder={placeholder}
-      onChange={(e) => {
-        updateText(e.target.value);
-        setText(e.target.value);
-      }}
-      onKeyUp={checkForEnter}
-      {...longPress}
-    />
+    <div className="relative z-0 w-full">
+      <TextareaAutosize
+        className={`w-full z-10 borde bg-transparent h-full focus:ring-0 border-0 border-none resize-none
+          ${false ? 'opacity- underline' : ''}
+        `}
+        value={text}
+        placeholder={placeholder}
+        onChange={(e) => {
+          updateText(e.target.value);
+          setText(e.target.value);
+        }}
+        // onKeyDown={checkForEnter}
+        {...longPress}
+      />
+
+      {/* <HoverMenu menuItems={menus} showMenu={showMenu} hide={hideMenu} /> */}
+    </div>
   );
 }

@@ -9,6 +9,7 @@ import { Chapter, Route } from '@/models/ServerModels';
 import { Loading } from '@/components/utilis/Loading';
 import RouterEditor from '@/components/creation/writing/RouterEditor';
 import { AddRouteToChapter } from '@/models/ChapterHelpers';
+import { GetStoryRoute } from '@/models/Routers';
 
 const tutorialPoints: TutorialPoint[] = [
   {
@@ -33,6 +34,8 @@ export default function ChapterEditor() {
   //*State
   const [beginExample, setBeginExample] = useState<boolean>(false);
   const [tutIndex, setTutIndex] = useState<number>(0);
+  const [unsavedChanges, setUnsavedChanges] = useState<boolean>(false);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
 
   //*Queries
   const { data: chapter, isLoading } = useQuery(
@@ -48,7 +51,7 @@ export default function ChapterEditor() {
   //*Mutations
   const chapterMutation = useMutation(
     (update: Chapter) => {
-      return UpdateChapter(chapter_id as string, update);
+      return updateChapter_Proxy(chapter_id as string, update);
     },
     {
       onSuccess: () => {
@@ -62,6 +65,23 @@ export default function ChapterEditor() {
     queryClient.invalidateQueries(CHAPTER_QUERY);
   }
 
+  //*Methods
+  async function updateChapter_Proxy(text: string, update: Chapter) {
+    setIsSaving(true);
+    await UpdateChapter(chapter_id as string, update);
+    setIsSaving(false);
+  }
+
+  async function addRoute(route: Route) {
+    const update = AddRouteToChapter(chapter, route);
+    chapterMutation.mutate(update);
+  }
+
+  function saveChanges(routes: Route[]) {
+    const chapterUpdate: Chapter = { ...chapter, routes: [...routes] };
+    chapterMutation.mutate(chapterUpdate);
+  }
+
   if (isLoading || !chapter) return <Loading />;
 
   return (
@@ -69,7 +89,10 @@ export default function ChapterEditor() {
       <nav className="flex w-full justify-between items-center">
         <button
           className="first-letter:capitalize opacity-50 text-xl flex items-center gap-4"
-          onClick={() => router.back()}
+          onClick={() => {
+            const link = GetStoryRoute(storyId as string);
+            router.push(link);
+          }}
         >
           {'<'}
           <div className="flex flex-col items-start">
@@ -78,11 +101,20 @@ export default function ChapterEditor() {
           </div>
         </button>
 
-        <span
+        <div className="mr-4">
+          {isSaving && (
+            <span className="material-icons animate-spin opacity-30">sync</span>
+          )}
+          {!isSaving && (
+            <span className="material-icons opacity-30">cloud_done</span>
+          )}
+        </div>
+
+        {/* <span
           className={`material-icons text-4xl transition-opacity ease-in-out duration-500 `}
         >
           style
-        </span>
+        </span> */}
       </nav>
 
       {!beginExample && (
@@ -96,11 +128,11 @@ export default function ChapterEditor() {
 
       {beginExample && (
         <RouterEditor
+          saveChanges={saveChanges}
+          unsavedChanges={unsavedChanges}
+          setUnsavedChanges={setUnsavedChanges}
           routes={chapter.routes}
-          addRoute={async (route: Route) => {
-            const update = AddRouteToChapter(chapter, route);
-            chapterMutation.mutate(update);
-          }}
+          addRoute={addRoute}
           deleteRoute={async (route: Route) => {
             console.error('to do: delete route');
           }}

@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import '../styles/globals.css';
 import AuthContextProvider from '../context/AuthContextProvider';
+import ModalContextProvider from '@/context/ModalContextProvider';
 import { QueryClientProvider, QueryClient } from 'react-query';
 
 const queryClient = new QueryClient();
@@ -11,11 +12,13 @@ function MyApp({ Component, pageProps }) {
     return (
       <>
         <Head>
-          <title>Creator</title>
+          <title>{process.env.NEXT_PUBLIC_PROJECT_NAME}</title>
         </Head>
         <AuthContextProvider>
           <QueryClientProvider client={queryClient}>
-            {Component.getLayout(<Component {...pageProps} />)}
+            <ModalContextProvider>
+              {Component.getLayout(<Component {...pageProps} />)}
+            </ModalContextProvider>
           </QueryClientProvider>
         </AuthContextProvider>
       </>
@@ -27,7 +30,11 @@ function MyApp({ Component, pageProps }) {
           <title>Confidiary</title>
         </Head>
         <AuthContextProvider>
-          <Component {...pageProps} />
+          <QueryClientProvider client={queryClient}>
+            <ModalContextProvider>
+              <Component {...pageProps} />
+            </ModalContextProvider>
+          </QueryClientProvider>
         </AuthContextProvider>
       </>
     );

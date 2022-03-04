@@ -87,7 +87,7 @@ export default function CreationDashboard() {
 
   if (story)
     return (
-      <div className="relative z-0">
+      <div className="relative z-0 h-full">
         <DashboardIndex
           story={story}
           story_id={story_Id as string}
@@ -106,8 +106,8 @@ export default function CreationDashboard() {
               </span>
             </button>
 
-            <h3 className="first-letter:capitalize opacity-50">
-              {story.title}
+            <h3 className="first-letter:capitalize opacity-50 w-full text-center px-16 ">
+              {process.env.NEXT_PUBLIC_PROJECT_NAME}
             </h3>
 
             <span
@@ -127,16 +127,17 @@ export default function CreationDashboard() {
           )}
 
           {story && story.tutorialFinished && (
-            <div>
-              <div className="flex flex-col items-center gap-8">
-                <h1 className="text-2xl">
-                  you have written {story.chapters_ids.length} chapters
-                </h1>
-                <Link href={MainRoutes.dashboard}>
-                  {'<  back to dashboard'}
-                </Link>
-              </div>
-            </div>
+            <main className="flex flex-col justify-between  items-center gap-8 h-full">
+              <header className="text-center">
+                <h1 className="text-2xl">{story.title}</h1>
+                <p className="opacity-50">
+                  {`${story.chapters_ids.length} ${
+                    story.chapters_ids.length > 1 ? 'chapters' : 'chapter'
+                  }`}
+                </p>
+              </header>
+              <Link href={MainRoutes.dashboard}>{'<  back to dashboard'}</Link>
+            </main>
           )}
 
           <div />
