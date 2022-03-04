@@ -14,7 +14,7 @@ export function HomeNav() {
 function HomeNavItem({ text }: { text: string }) {
   return (
     <Shadow color="bg-surface">
-      <div className="bg-surface border-[3px] border-onSurface rounded-2xl py-2 px-4">
+      <div className="bg-surface border-3 border-onSurface rounded-2xl py-2 px-4">
         <span className="capitalize">{text}</span>
       </div>
     </Shadow>

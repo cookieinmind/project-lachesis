@@ -10,7 +10,7 @@ export default function Searchbar({
 }) {
   return (
     <Shadow color="bg-yellow">
-      <div className="flex gap-2 px-4 py-2 items-center rounded-full bg-surface border-[3px] border-onSurface">
+      <div className="flex gap-2 px-4 py-2 items-center rounded-full bg-surface border-3 border-onSurface">
         <span className="material-icons">search</span>
         <input
           type="text"

@@ -11,11 +11,14 @@ import { HomeCard } from '@/components/home/HomeCard';
 import { useState } from 'react';
 import Searchbar from '@/components/home/Searchbar';
 
+const DUMMY_PIC_URL =
+  'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZSUyMHBpY3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60';
+
 export default function Home() {
   const { user, logOut } = useAuth();
   const [text, setText] = useState<string>();
 
-  const photoURL = user?.photoURL;
+  const photoURL = user?.photoURL ? user.photoURL : DUMMY_PIC_URL;
 
   return (
     <div className="h-full flex flex-col gap-8  p-2">
@@ -33,9 +36,20 @@ export default function Home() {
           <p>Get paid for writing</p>
         </div>
       </div>
+
       {photoURL && (
-        <figure>
-          <Image src={photoURL} width={40} height={40} alt="profile picture" />
+        <figure
+          className="aspect-square rounded-full overflow-hidden fixed top-2 right-2
+        w-12 h-12 border-3 border-onSurface"
+        >
+          <Image
+            src={photoURL}
+            width={40}
+            height={40}
+            alt="profile picture of the user"
+            layout="fill"
+            objectFit="cover"
+          />
         </figure>
       )}
 
