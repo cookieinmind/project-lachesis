@@ -85,7 +85,7 @@ export default function ChapterEditor() {
   if (isLoading || !chapter) return <Loading />;
 
   return (
-    <div className="center flex-col w-full gap-8">
+    <div className="center flex-col w-full gap-8 p-2">
       <nav className="flex w-full justify-between items-center">
         <button
           className="first-letter:capitalize opacity-50 text-xl flex items-center gap-4"
@@ -142,6 +142,6 @@ export default function ChapterEditor() {
   );
 }
 
-ChapterEditor.getLayout = function getLayout(page) {
-  return <MainLayout>{page}</MainLayout>;
-};
+// ChapterEditor.getLayout = function getLayout(page) {
+//   return <MainLayout>{page}</MainLayout>;
+// };

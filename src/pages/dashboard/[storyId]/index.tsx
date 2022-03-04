@@ -87,7 +87,7 @@ export default function CreationDashboard() {
 
   if (story)
     return (
-      <div className="relative z-0 h-full">
+      <div className="relative z-0 h-full p-2">
         <DashboardIndex
           story={story}
           story_id={story_Id as string}
@@ -148,6 +148,6 @@ export default function CreationDashboard() {
   return <Loading />;
 }
 
-CreationDashboard.getLayout = function getLayout(page) {
-  return <MainLayout>{page}</MainLayout>;
-};
+// CreationDashboard.getLayout = function getLayout(page) {
+//   return <MainLayout>{page}</MainLayout>;
+// };
