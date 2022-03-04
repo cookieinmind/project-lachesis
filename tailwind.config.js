@@ -39,6 +39,10 @@ module.exports = {
       '2xl': '1920px',
     },
     extend: {
+      borderWidth: {
+        1: '1px',
+        3: '3px',
+      },
       transitionTimingFunction: {
         'in-out-back': 'cubic-bezier(0.7, -0.4, 0.4, 1.4)',
       },
