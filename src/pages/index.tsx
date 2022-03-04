@@ -38,10 +38,12 @@ export default function Home() {
           <Image src={photoURL} width={40} height={40} alt="profile picture" />
         </figure>
       )}
-      {/* Search bar */}
-      <Searchbar text={text} setText={setText} />
 
-      <HomeNav />
+      <nav className="flex flex-col gap-4">
+        <Searchbar text={text} setText={setText} />
+        <HomeNav />
+      </nav>
+
       <div className="flex flex-col gap-2">
         <HomeCard
           title="Top books"
