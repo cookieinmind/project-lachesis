@@ -2,17 +2,26 @@ import React from 'react';
 
 export default function Shadow({
   children: child,
-  color,
+  color: shadowColor,
 }: {
   children: JSX.Element;
   color: string;
 }) {
   const shadowClass =
-    color +
+    shadowColor +
     ' absolute left-[calc(50%+12px)] translate-x-[calc(-50%-6px)] top-[6px] z-0';
 
+  function getShadowClasses(originalClasses: string): string {
+    const firstIndex = originalClasses.indexOf('bg-');
+    const lastIndex = originalClasses.indexOf(' ', firstIndex);
+    const sen1 = originalClasses.slice(0, firstIndex);
+    const send2 = originalClasses.slice(lastIndex, originalClasses.length);
+
+    return sen1 + send2 + ' ' + shadowClass;
+  }
+
   const shadowChildren = React.cloneElement(child, {
-    className: `${child.props.className} ${shadowClass}`,
+    className: getShadowClasses(child.props.className),
   });
 
   return (
