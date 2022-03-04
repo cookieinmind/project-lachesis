@@ -4,20 +4,48 @@ import Link from 'next/link';
 import { DashboardRoutes, MainRoutes } from '../models/Routers';
 import Layout from '../components/Layout';
 import { useAuth } from '../context/AuthContextProvider';
+import Image from 'next/image';
+import Shadow from '@/components/utilis/Shadow';
 
 export default function Home() {
   const { user, logOut } = useAuth();
 
+  const photoURL = user?.photoURL;
+
   return (
-    <div className="h-full center flex-col gap-16">
-      <div className="flex flex-col items-center gap-8">
-        <h1 className="text-3xl">Welcome to creator</h1>
-        <h2 className="opacity-50">{'find a story >'}</h2>
-        <Link href={DashboardRoutes.Create}>{'create a story >'}</Link>
-        {user && <Link href={MainRoutes.dashboard}>{'your dashboard >'}</Link>}
+    <div className="h-full flex flex-col gap-8  p-2">
+      {/* Hero text */}
+      <div className="text-center center flex-col gap-4">
+        <h1 className="font-display text-5xl font-light leading-[64px]">
+          Welcome to
+          <br />
+          <span>Project</span>
+          <br />
+          <span>Lachesis</span>
+        </h1>
+        <div className="flex flex-col gap-2">
+          <p>Choose-your-own-adventure light novels</p>
+          <p>Get paid for writing</p>
+        </div>
       </div>
 
-      {user && <button onClick={logOut}>Log out</button>}
+      {photoURL && (
+        <figure>
+          <Image src={photoURL} width={40} height={40} alt="profile picture" />
+        </figure>
+      )}
+
+      {/* Search bar */}
+      <Shadow color="bg-yellow">
+        <div className="absolute left-[50%] translate-x-[-50%] z-10 top-0 flex gap-2 px-4 py-2 items-center rounded-full bg-surface border-[3px] border-onSurface">
+          <span className="material-icons">search</span>
+          <input
+            type="text"
+            className="bg-transparent border-none placeholder:font-display focus:ring-transparent"
+            placeholder="Search"
+          />
+        </div>
+      </Shadow>
     </div>
   );
 }
