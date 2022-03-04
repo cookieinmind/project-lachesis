@@ -12,6 +12,7 @@ export default function Shadow({
     ' absolute left-[calc(50%+12px)] translate-x-[calc(-50%-6px)] top-[6px] z-0';
 
   function getShadowClasses(originalClasses: string): string {
+    if (!originalClasses) return shadowClass;
     const firstIndex = originalClasses.indexOf('bg-');
     const lastIndex = originalClasses.indexOf(' ', firstIndex);
     const sen1 = originalClasses.slice(0, firstIndex);

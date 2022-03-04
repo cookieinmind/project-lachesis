@@ -21,7 +21,7 @@ export function Loading() {
   }, []);
 
   return (
-    <div className="h-full center flex-col gap-4">
+    <div className="h-screen center flex-col gap-4">
       <div className="animate-pulse text-center">loading...</div>
       <span
         className={`transition-all duration-300 ${

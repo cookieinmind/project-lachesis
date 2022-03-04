@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { HomeNav } from '@/components/home/HomeNav';
 import { HomeCard } from '@/components/home/HomeCard';
 import { useState } from 'react';
-import Searchbar from '@/components/home/Searchbar';
+import Searchbar from '@/components/utilis/Searchbar';
 
 const DUMMY_PIC_URL =
   'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZSUyMHBpY3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60';

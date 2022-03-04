@@ -1,11 +1,14 @@
 import MainLayout from '@/components/layouts/MainLayout';
 import { DashboardRoutes, GetStoryRoute, MainRoutes } from '@/models/Routers';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { GetUserStoriesWithIds } from '@/firebase/FirebaseMethods';
 import { useQuery } from 'react-query';
 import { useAuth } from '@/context/AuthContextProvider';
 import { Loading } from '@/components/utilis/Loading';
+import Searchbar from '@/components/utilis/Searchbar';
+import Shadow from '@/components/utilis/Shadow';
+import { useRouter } from 'next/router';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -16,36 +19,61 @@ export default function Dashboard() {
       enabled: !!user,
     }
   );
+  const router = useRouter();
+
+  const [searchText, setSearchText] = useState<string>();
 
   if (!storiesData) return <Loading />;
 
+  function newStory() {
+    router.push(MainRoutes.create);
+  }
+
   return (
-    <div className="center flex-col gap-8 h-full">
-      <div className="text-center">
-        <h1 className="text-3xl">Dashboard</h1>
-        <div className="opacity-50 center flex-col gap-2">
-          <span className="material-icons">warning</span>
-          <p>
-            {
-              "your stories are save in the cloud, but you will lose access to them if you don't "
-            }
-            <span className="underline">{'sign up >'}</span>
-          </p>
-        </div>
-      </div>
-      <Link href={DashboardRoutes.Create}>{'Create a story >'}</Link>
+    <div className="p-2 flex flex-col gap-4 h-full">
+      <Searchbar
+        text={searchText}
+        setText={setSearchText}
+        placeholder={'Search through your stories'}
+        color="bg-blue"
+      />
+      <Shadow color="bg-surface">
+        <button
+          className="bg-surface border-3 border-onSurface py-2 px-4 rounded-xl flex items-center gap-2"
+          onClick={newStory}
+        >
+          <span className="material-icons text-lg">add</span>
+          <span>New story</span>
+        </button>
+      </Shadow>
+      {/* Stories */}
       {storiesData && storiesData.stories.length > 0 && (
-        <div className="center flex-col gap-4">
-          <h2 className="text-xl opacity-50">Yours stories:</h2>
+        <div className="flex flex-col gap-4 h-full">
           {storiesData.stories.map((story, i) => {
+            const numChaps = story.chapters_ids.length;
+            const chapsLabel = numChaps > 1 ? 'chapters' : 'chapter';
+
+            function goToStory() {
+              router.push(GetStoryRoute(storiesData.ids[i]));
+            }
+
             return (
-              <Link href={GetStoryRoute(storiesData.ids[i])} key={i}>
-                {`${story.title} >`}
-              </Link>
+              <Shadow color="bg-orange" key={i}>
+                <button
+                  onClick={goToStory}
+                  className="border-3 border-onSurface py-2 px-4 rounded-xl 
+                capitalize w-fit flex items-end flex-col bg-surface"
+                >
+                  <span className="text-lg font-display">{story.title}</span>
+                  <span className="opacity-50 text-sm font-medium ">
+                    {numChaps} {chapsLabel}
+                  </span>
+                </button>
+              </Shadow>
             );
           })}
         </div>
-      )}
+      )}{' '}
     </div>
   );
 }
@@ -53,3 +81,12 @@ export default function Dashboard() {
 Dashboard.getLayout = function getLayout(page) {
   return <MainLayout>{page}</MainLayout>;
 };
+
+//  <p>
+//    {
+//      "your stories are save in the cloud, but you will lose access to them if you don't "
+//    }
+//    <span className="underline">{'sign up >'}</span>
+//  </p>;
+
+//<Link href={DashboardRoutes.Create}>{'Create a story >'}</Link>
