@@ -41,12 +41,12 @@ export default function CreateStory() {
 
   return (
     <>
-      <button
+      {/* <button
         className="text-xl disabled:opacity-50"
         onClick={() => router.back()}
       >
         {'< back'}
-      </button>
+      </button> */}
       {/* Pick a title */}
       <div className="h-full center flex-col gap-16">
         {/* Title */}
