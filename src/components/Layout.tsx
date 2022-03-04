@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Navbar from './navigation/Navbar';
 
 export default function Layout({
   children,
@@ -11,6 +12,10 @@ export default function Layout({
       id="layout"
     >
       {children}
+
+      <div className="w-full fixed bottom-0">
+        <Navbar />
+      </div>
     </div>
   );
 }
