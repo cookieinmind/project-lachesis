@@ -1,11 +1,6 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import Link from 'next/link';
-import { DashboardRoutes, MainRoutes } from '../models/Routers';
-import Layout from '../components/Layout';
+import MainLayout from '@/components/layouts/MainLayout';
 import { useAuth } from '../context/AuthContextProvider';
 import Image from 'next/image';
-import Shadow from '@/components/utilis/Shadow';
 import { HomeNav } from '@/components/home/HomeNav';
 import { HomeCard } from '@/components/home/HomeCard';
 import { useState } from 'react';
@@ -80,5 +75,5 @@ export default function Home() {
 }
 
 Home.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
+  return <MainLayout>{page}</MainLayout>;
 };

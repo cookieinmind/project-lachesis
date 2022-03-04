@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import { TutorialPoint } from '@/models/client/Creation';
 import { TutorialPointsDisplayer } from '@/components/tutorials/TutorialShower';
-import Layout from '@/components/Layout';
+import MainLayout from '@/components/layouts/MainLayout';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { GetChapter, UpdateChapter } from '@/firebase/FirebaseMethods';
 import { Chapter, Route } from '@/models/ServerModels';
@@ -143,5 +143,5 @@ export default function ChapterEditor() {
 }
 
 ChapterEditor.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
+  return <MainLayout>{page}</MainLayout>;
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '@/components/Layout';
+import MainLayout from '@/components/layouts/MainLayout';
 import { useQuery } from 'react-query';
 import { GetStory, UpdateStory } from '@/firebase/FirebaseMethods';
 import { useAuth } from '@/context/AuthContextProvider';
@@ -149,5 +149,5 @@ export default function CreationDashboard() {
 }
 
 CreationDashboard.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
+  return <MainLayout>{page}</MainLayout>;
 };

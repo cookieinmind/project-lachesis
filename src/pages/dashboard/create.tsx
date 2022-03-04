@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Layout from '../../components/Layout';
+import MainLayout from '@/components/layouts/MainLayout';
 import { useAuth } from '../../context/AuthContextProvider';
 import { AddNewStory, CreateUserModel } from '../../firebase/FirebaseMethods';
 import { PublicUserData, Story } from '../../models/ServerModels';
@@ -83,5 +83,5 @@ export default function CreateStory() {
 }
 
 CreateStory.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
+  return <MainLayout>{page}</MainLayout>;
 };

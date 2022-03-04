@@ -1,4 +1,4 @@
-import Layout from '@/components/Layout';
+import MainLayout from '@/components/layouts/MainLayout';
 import { DashboardRoutes, GetStoryRoute, MainRoutes } from '@/models/Routers';
 import Link from 'next/link';
 import React from 'react';
@@ -51,5 +51,5 @@ export default function Dashboard() {
 }
 
 Dashboard.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
+  return <MainLayout>{page}</MainLayout>;
 };

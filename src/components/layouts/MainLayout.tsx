@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import Navbar from './navigation/Navbar';
+import Navbar from '@/components/navigation/Navbar';
 
-export default function Layout({
+export default function MainLayout({
   children,
 }: {
   children: JSX.Element | JSX.Element[];
