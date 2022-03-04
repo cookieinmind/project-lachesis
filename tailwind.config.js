@@ -3,53 +3,23 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     fontFamily: {
-      handwritten: ['Schoolbell', 'cursive'],
+      content: ['PT Sans', 'sans-serif'],
+      display: ['Roboto Slab', 'serif'],
     },
     colors: {
       transparent: 'transparent',
-      //Main
-      primary: '#CAC1EA',
-      secondary: '#B5C9D7',
-      tertiary: '#CAC1EA',
 
-      onPrimary: '#322C4C',
-      onSecondary: '#20333E',
-      onTertiary: '#322C4C',
+      //surfaces
+      surface: '#fafafa',
+      onSurface: '#212121',
 
-      //Backgrounds
-      background: '#191C1E',
-      semiTransparent: 'rgba(25, 28, 30, 0.5)',
-      transparentBackgroundX: 'rgba(25, 28, 30, 0.75)',
-      transparentBackground: 'rgba(25, 28, 30, 0.97)',
-      onBackground: '#E1E2E5',
-
-      surface: '#E1E2E5',
-      onSurface: '#191c1e',
-
-      surfaceVariant: '#41484d',
-      onSurfaceVariant: '#c0c7cd',
-
-      //Containers
-      primaryContainer: '#484264',
-      onPrimaryContainer: '#E7DEFF',
-
-      secondaryContainer: '#374955',
-      onSecondaryContainer: '#D1E5F3',
-
-      tertiaryContainer: '#484264',
-      onTertiaryContainer: '#E7DEFF',
-
-      //Extras
-      outline: '#71787D',
-
-      error: '#ffb4a9',
-      onError: '#680003',
-      errorContainer: '#930006',
-      onErrorContainer: '#ffdad4',
-
-      inversePrimary: '#00668B',
-
-      shadow: '#000000',
+      //colors
+      yellow: '#FFC600',
+      pink: '#FF008E',
+      green: '#77D970',
+      blue: '#9ADCFF',
+      salmon: '#FF6464',
+      orange: '#F47340',
     },
     letterSpacing: {
       tightest: '-0.5px',
