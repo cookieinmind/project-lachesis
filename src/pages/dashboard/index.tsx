@@ -1,17 +1,21 @@
 import MainLayout from '@/components/layouts/MainLayout';
 import { DashboardRoutes, GetStoryRoute, MainRoutes } from '@/models/Routers';
 import Link from 'next/link';
-import React, { useState } from 'react';
-import { GetUserStoriesWithIds } from '@/firebase/FirebaseMethods';
+import React, { useEffect, useState } from 'react';
+import {
+  CreateUserModel,
+  GetUserStoriesWithIds,
+} from '@/firebase/FirebaseMethods';
 import { useQuery } from 'react-query';
 import { useAuth } from '@/context/AuthContextProvider';
 import { Loading } from '@/components/utilis/Loading';
 import Searchbar from '@/components/utilis/Searchbar';
 import Shadow from '@/components/utilis/Shadow';
 import { useRouter } from 'next/router';
+import { PublicUserData } from '@/models/ServerModels';
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { user, signInAnon } = useAuth();
   const { data: storiesData } = useQuery(
     ['users stories'],
     () => GetUserStoriesWithIds(user.uid),
@@ -23,11 +27,26 @@ export default function Dashboard() {
 
   const [searchText, setSearchText] = useState<string>();
 
-  if (!storiesData) return <Loading />;
-
   function newStory() {
     router.push(MainRoutes.create);
   }
+
+  useEffect(() => {
+    async function createUser() {
+      const u = await signInAnon();
+      console.log(u);
+      //create a user file.
+      const userModel: PublicUserData = {
+        username: `anon`,
+        storiesPlaying: [],
+      };
+      await CreateUserModel(u.uid, userModel);
+    }
+
+    if (!user) createUser();
+  }, [user, signInAnon]);
+
+  if (!storiesData) return <Loading />;
 
   return (
     <div className="p-2 flex flex-col gap-4 h-full">

@@ -3,17 +3,34 @@ import { useAuth } from '../context/AuthContextProvider';
 import Image from 'next/image';
 import { HomeNav } from '@/components/home/HomeNav';
 import { HomeCard } from '@/components/home/HomeCard';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Searchbar from '@/components/utilis/Searchbar';
+import { PublicUserData } from '@/models/ServerModels';
+import { CreateUserModel } from '@/firebase/FirebaseMethods';
 
 const DUMMY_PIC_URL =
   'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZSUyMHBpY3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60';
 
 export default function Home() {
-  const { user, logOut } = useAuth();
+  const { user, signInAnon } = useAuth();
   const [text, setText] = useState<string>();
 
   const photoURL = user?.photoURL ? user.photoURL : DUMMY_PIC_URL;
+
+  useEffect(() => {
+    async function createUser() {
+      const u = await signInAnon();
+      console.log(u);
+      //create a user file.
+      const userModel: PublicUserData = {
+        username: `anon`,
+        storiesPlaying: [],
+      };
+      await CreateUserModel(u.uid, userModel);
+    }
+
+    if (!user) createUser();
+  }, [user, signInAnon]);
 
   return (
     <div className="h-full flex flex-col gap-8  p-2">
