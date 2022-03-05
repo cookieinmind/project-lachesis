@@ -35,8 +35,8 @@ export default function Home() {
   return (
     <div className="h-full flex flex-col gap-8  p-2">
       {/* Hero text */}
-      <div className="text-center center flex-col gap-4">
-        <h1 className="font-display text-5xl font-light leading-[64px]">
+      <div className="flex flex-col gap-4">
+        <h1 className="font-display text-5xl font-light leading-[60px]">
           Welcome to
           <br />
           <span>Project</span>
