@@ -1,15 +1,20 @@
 import React from 'react';
 
+export enum ShadowHeight {
+  four = 'left-[calc(50%+9px)] translate-x-[calc(-50%-4px)] top-[4px]',
+  six = 'left-[calc(50%+12px)] translate-x-[calc(-50%-6px)] top-[6px]',
+}
+
 export default function Shadow({
   children: child,
   color: shadowColor,
+  height = ShadowHeight.six,
 }: {
   children: JSX.Element;
   color: string;
+  height?: ShadowHeight;
 }) {
-  const shadowClass =
-    shadowColor +
-    ' absolute left-[calc(50%+12px)] translate-x-[calc(-50%-6px)] top-[6px] z-0';
+  const shadowClass = `${shadowColor} ${height} absolute z-0`;
 
   function getShadowClasses(originalClasses: string): string {
     if (!originalClasses) return shadowClass;
