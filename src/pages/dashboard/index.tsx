@@ -28,7 +28,7 @@ export default function Dashboard() {
   const [searchText, setSearchText] = useState<string>();
 
   function newStory() {
-    router.push(MainRoutes.create);
+    router.push(DashboardRoutes.Create);
   }
 
   useEffect(() => {

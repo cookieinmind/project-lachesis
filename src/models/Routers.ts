@@ -1,5 +1,5 @@
 export enum MainRoutes {
-  create = '/dashboard/create',
+  library = '/library',
   dashboard = '/dashboard',
   home = '/',
 }
