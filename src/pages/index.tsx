@@ -18,6 +18,10 @@ export default function Home() {
   const photoURL = user?.photoURL ? user.photoURL : DUMMY_PIC_URL;
 
   useEffect(() => {
+    console.log(text);
+  }, [text]);
+
+  useEffect(() => {
     async function createUser() {
       const u = await signInAnon();
       console.log(u);
@@ -33,7 +37,7 @@ export default function Home() {
   }, [user, signInAnon]);
 
   return (
-    <div className="h-full flex flex-col gap-8  p-2">
+    <div className="h-full flex flex-col gap-8 ">
       {/* Hero text */}
       <div className="flex flex-col gap-4">
         <h1 className="font-display text-5xl font-light leading-[60px]">
@@ -56,8 +60,6 @@ export default function Home() {
         >
           <Image
             src={photoURL}
-            width={40}
-            height={40}
             alt="profile picture of the user"
             layout="fill"
             objectFit="cover"
