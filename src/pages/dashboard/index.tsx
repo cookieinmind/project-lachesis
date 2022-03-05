@@ -1,6 +1,6 @@
 import MainLayout from '@/components/layouts/MainLayout';
 import { DashboardRoutes, GetStoryRoute } from '@/models/Routers';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   CreateUserModel,
   GetUserStoriesWithIds,
@@ -10,21 +10,33 @@ import { useAuth } from '@/context/AuthContextProvider';
 import { Loading } from '@/components/utilis/Loading';
 import Searchbar from '@/components/utilis/Searchbar';
 import { useRouter } from 'next/router';
-import { PublicUserData } from '@/models/ServerModels';
+import { PublicUserData, Story } from '@/models/ServerModels';
 import { IconButton } from '@/components/utilis/IconButton';
 
 export default function Dashboard() {
+  //*State
+  const router = useRouter();
   const { user, signInAnon } = useAuth();
+  const [searchText, setSearchText] = useState<string>('');
+
+  //*Queries
   const { data: storiesData } = useQuery(
     ['users stories'],
     () => GetUserStoriesWithIds(user.uid),
     {
       enabled: !!user,
+      onSuccess: () => console.log('got the stories!!'),
     }
   );
-  const router = useRouter();
 
-  const [searchText, setSearchText] = useState<string>();
+  //*Memos
+  const stories: Story[] = useMemo((): Story[] => {
+    if (!storiesData?.stories) return [];
+    const _stories = storiesData.stories;
+    if (searchText === '') return _stories;
+
+    return _stories.filter((s) => s.title.includes(searchText));
+  }, [storiesData, searchText]);
 
   function newStory() {
     router.push(DashboardRoutes.Create);
@@ -60,8 +72,8 @@ export default function Dashboard() {
       {/* Stories */}
       <div className="flex flex-col gap-4 pb-24">
         <IconButton icon="add" label="new story" onClick={newStory} />
-        {storiesData?.stories.length > 0 &&
-          storiesData.stories.map((story, i) => {
+        {stories?.length > 0 &&
+          stories.map((story, i) => {
             const numChaps = story.chapters_ids.length;
             const chapsLabel = numChaps !== 1 ? 'chapters' : 'chapter';
 
