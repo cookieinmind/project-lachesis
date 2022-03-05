@@ -1,6 +1,5 @@
 import MainLayout from '@/components/layouts/MainLayout';
-import { DashboardRoutes, GetStoryRoute, MainRoutes } from '@/models/Routers';
-import Link from 'next/link';
+import { DashboardRoutes, GetStoryRoute } from '@/models/Routers';
 import React, { useEffect, useState } from 'react';
 import {
   CreateUserModel,
@@ -10,7 +9,6 @@ import { useQuery } from 'react-query';
 import { useAuth } from '@/context/AuthContextProvider';
 import { Loading } from '@/components/utilis/Loading';
 import Searchbar from '@/components/utilis/Searchbar';
-import Shadow from '@/components/utilis/Shadow';
 import { useRouter } from 'next/router';
 import { PublicUserData } from '@/models/ServerModels';
 import { IconButton } from '@/components/utilis/IconButton';
@@ -60,7 +58,7 @@ export default function Dashboard() {
         />
       </div>
       {/* Stories */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 pb-24">
         <IconButton icon="add" label="new story" onClick={newStory} />
         {storiesData?.stories.length > 0 &&
           storiesData.stories.map((story, i) => {
