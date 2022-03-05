@@ -25,14 +25,23 @@ export default function Shadow({
     className: getShadowClasses(child.props.className),
   });
 
+  const invisibleCopy = React.cloneElement(child, {
+    className: child.props.className + ' insivible',
+  });
+
+  const childCopy = React.cloneElement(child, {
+    className: child.props.className + ' absolute z-10 block',
+  });
+
   return (
-    <div className="relative w-full mb-[6px] center">
+    <div className="relative mb-[6px] center">
       {/* Shadow */}
       {shadowChildren}
       {/* Actual rendering */}
-      <div className="absolute z-10 block">{child}</div>
+      {/* <div className="absolute z-10 block">{child}</div> */}
+      {childCopy}
       {/* So the container gets the size of the child */}
-      <div className="invisible">{child}</div>
+      {invisibleCopy}
     </div>
   );
 }
