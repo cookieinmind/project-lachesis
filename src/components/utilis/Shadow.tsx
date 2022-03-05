@@ -1,6 +1,7 @@
 import React from 'react';
 
 export enum ShadowHeight {
+  none = ' left-[calc(50%)] translate-x-[calc(-50%)] ',
   four = ' left-[calc(50%+4px)] translate-x-[calc(-50%)] top-[4px] ',
   six = ' left-[calc(50%+6px)] translate-x-[calc(-50%)] top-[6px] ',
 }
@@ -43,7 +44,7 @@ export default function Shadow({
   return (
     <div className="relative mb-[6px] shrink-0" id="shadow">
       {/* Shadow */}
-      {shadowChildren}
+      {height !== ShadowHeight.none && shadowChildren}
       {/* Actual rendering */}
       {/* <div className="absolute z-10 block">{child}</div> */}
       {childCopy}

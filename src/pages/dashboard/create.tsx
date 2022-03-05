@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import MainLayout from '@/components/layouts/MainLayout';
 import { useAuth } from '../../context/AuthContextProvider';
 import { AddNewStory, CreateUserModel } from '../../firebase/FirebaseMethods';
 import { PublicUserData, Story } from '../../models/ServerModels';
 import { useRouter } from 'next/router';
 import { DashboardRoutes, GetStoryRoute } from '../../models/Routers';
+import { IconButton } from '@/components/utilis/IconButton';
 
 export default function CreateStory() {
   const [title, setTitle] = useState<string>();
   const { user, signInAnon } = useAuth();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   async function createStory() {
+    setIsLoading(true);
     let uid: string = user?.uid;
     if (!user) {
       const u = await signInAnon();
@@ -37,46 +39,51 @@ export default function CreateStory() {
     const link = GetStoryRoute(id);
     console.log('-', story);
     router.push(link);
+    setIsLoading(false);
   }
 
-  return (
-    <div className="p-2 flex flex-col gap-4">
-      <button
-        className="text-xl disabled:opacity-50"
-        onClick={() => router.back()}
-      >
-        {'< back'}
-      </button>
+  const goBack = () => router.back();
 
-      {/* Title */}
-      <div className="center flex-col gap-4">
-        <h1 className="text-2xl">Give your story a name</h1>
-        <input
-          type="text"
-          className="bg-transparent min-w-[50%] text-center
+  return (
+    <>
+      <header className="w-full flex gap-4 items-center bg-blue p-2 mb-4 border-b-3 border-onSurface">
+        <IconButton icon="arrow_back" onClick={goBack} />
+        <h1 className="text-xl font-display">New story</h1>
+      </header>
+
+      <main className="p-2 flex flex-col justify-between gap-16">
+        <div className="center flex-col gap-4">
+          <h2 className="text-2xl">Give your story a name</h2>
+          <input
+            type="text"
+            className="bg-transparent min-w-[50%] text-center
             focus:ring-0 focus:opacity-100             
             opacity-75 border-b-2 border-t-0 border-x-0 
             focus:border-onSurface
             "
-          value={title}
-          onChange={(e) => {
-            if (e.target.value === '') setTitle(undefined);
-            else setTitle(e.target.value);
+            value={title}
+            onChange={(e) => {
+              if (e.target.value === '') setTitle(undefined);
+              else setTitle(e.target.value);
+            }}
+          />
+          <p className="opacity-50">
+            {"(you can change it later, don't mind it too much)"}
+          </p>
+        </div>
+        <IconButton
+          icon="arrow_forward"
+          onClick={createStory}
+          label={'continue'}
+          color="bg-green"
+          disabled={title === undefined}
+          loadingState={{
+            isLoading: isLoading,
+            loadingLabel: 'creating...',
           }}
         />
-        <p className="opacity-50">
-          {"(you can change it later, don't mind it too much)"}
-        </p>
-      </div>
-      {/* Pick a title */}
-      <button
-        className="text-xl disabled:opacity-50"
-        onClick={createStory}
-        disabled={title === undefined}
-      >
-        {'Continue >'}
-      </button>
-    </div>
+      </main>
+    </>
   );
 }
 
