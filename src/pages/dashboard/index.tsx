@@ -60,7 +60,7 @@ export default function Dashboard() {
   if (!storiesData) return <Loading />;
 
   return (
-    <div className="p-2 flex flex-col gap-4 h-full">
+    <div className="flex flex-col gap-5 h-full">
       <div className="sticky top-4 z-50">
         <Searchbar
           text={searchText}
