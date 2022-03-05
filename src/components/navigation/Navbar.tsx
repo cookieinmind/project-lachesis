@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 
 export default function Navbar() {
   return (
-    <div className="bg-surface border-t-[3px] flex justify-between py-3 px-24">
+    <div className="bg-surface border-t-[3px] flex justify-between py-3 px-24 ">
       <NavItem icon="home" url={MainRoutes.home} />
       <NavItem icon="create" url={MainRoutes.dashboard} />
       <NavItem icon="dashboard" url={MainRoutes.library} />
