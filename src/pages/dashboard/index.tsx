@@ -13,6 +13,7 @@ import Searchbar from '@/components/utilis/Searchbar';
 import Shadow from '@/components/utilis/Shadow';
 import { useRouter } from 'next/router';
 import { PublicUserData } from '@/models/ServerModels';
+import { IconButton } from '@/components/utilis/IconButton';
 
 export default function Dashboard() {
   const { user, signInAnon } = useAuth();
@@ -50,49 +51,45 @@ export default function Dashboard() {
 
   return (
     <div className="p-2 flex flex-col gap-4 h-full">
-      <Searchbar
-        text={searchText}
-        setText={setSearchText}
-        placeholder={'Search through your stories'}
-        color="bg-blue"
-      />
-      <Shadow color="bg-surface">
-        <button
-          className="bg-surface border-3 border-onSurface py-2 px-4 rounded-xl flex items-center gap-2"
-          onClick={newStory}
-        >
-          <span className="material-icons text-lg">add</span>
-          <span>New story</span>
-        </button>
-      </Shadow>
+      <div className="sticky top-4 z-50">
+        <Searchbar
+          text={searchText}
+          setText={setSearchText}
+          placeholder={'Search through your stories'}
+          color="bg-blue"
+        />
+      </div>
       {/* Stories */}
-      {storiesData && storiesData.stories.length > 0 && (
-        <div className="flex flex-col gap-4 h-full">
-          {storiesData.stories.map((story, i) => {
+      <div className="flex flex-col gap-4">
+        <IconButton icon="add" label="new story" onClick={newStory} />
+        {storiesData?.stories.length > 0 &&
+          storiesData.stories.map((story, i) => {
             const numChaps = story.chapters_ids.length;
-            const chapsLabel = numChaps > 1 ? 'chapters' : 'chapter';
+            const chapsLabel = numChaps !== 1 ? 'chapters' : 'chapter';
 
             function goToStory() {
               router.push(GetStoryRoute(storiesData.ids[i]));
             }
 
             return (
-              <Shadow color="bg-orange" key={i}>
-                <button
-                  onClick={goToStory}
-                  className="border-3 border-onSurface py-2 px-4 rounded-xl 
-                capitalize w-fit flex items-end flex-col bg-surface"
-                >
+              <div
+                className="bg-surface border-onSurface border-3 w-full flex justify-between  py-2 px-4 rounded-xl"
+                key={i}
+              >
+                {/* Text */}
+                <div className="flex flex-col">
                   <span className="text-lg font-display">{story.title}</span>
-                  <span className="opacity-50 text-sm font-medium ">
+                  <span className="opacity-50 text-sm font-medium">
                     {numChaps} {chapsLabel}
                   </span>
-                </button>
-              </Shadow>
+                </div>
+
+                {/* Go button */}
+                <IconButton icon="create" color="bg-blue" onClick={goToStory} />
+              </div>
             );
           })}
-        </div>
-      )}{' '}
+      </div>
     </div>
   );
 }
@@ -100,12 +97,3 @@ export default function Dashboard() {
 Dashboard.getLayout = function getLayout(page) {
   return <MainLayout>{page}</MainLayout>;
 };
-
-//  <p>
-//    {
-//      "your stories are save in the cloud, but you will lose access to them if you don't "
-//    }
-//    <span className="underline">{'sign up >'}</span>
-//  </p>;
-
-//<Link href={DashboardRoutes.Create}>{'Create a story >'}</Link>
