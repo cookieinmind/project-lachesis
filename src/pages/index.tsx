@@ -72,7 +72,7 @@ export default function Home() {
         <HomeNav />
       </nav>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 pb-20">
         <HomeCard
           title="Top books"
           subtitle="check out the top 50 books"
