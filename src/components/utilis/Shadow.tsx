@@ -1,8 +1,8 @@
 import React from 'react';
 
 export enum ShadowHeight {
-  four = 'left-[calc(50%+9px)] translate-x-[calc(-50%-4px)] top-[4px]',
-  six = 'left-[calc(50%+12px)] translate-x-[calc(-50%-6px)] top-[6px]',
+  four = ' left-[calc(50%+4px)] translate-x-[calc(-50%)] top-[4px] ',
+  six = ' left-[calc(50%+6px)] translate-x-[calc(-50%)] top-[6px] ',
 }
 
 export default function Shadow({
@@ -31,15 +31,17 @@ export default function Shadow({
   });
 
   const invisibleCopy = React.cloneElement(child, {
-    className: child.props.className + ' insivible',
+    className: child.props.className + ' invisible ',
   });
 
   const childCopy = React.cloneElement(child, {
-    className: child.props.className + ' absolute z-10 block',
+    className:
+      child.props.className +
+      ' absolute z-10 left-[calc(50%)] translate-x-[calc(-50%)]',
   });
 
   return (
-    <div className="relative mb-[6px] center">
+    <div className="relative mb-[6px] shrink-0" id="shadow">
       {/* Shadow */}
       {shadowChildren}
       {/* Actual rendering */}
