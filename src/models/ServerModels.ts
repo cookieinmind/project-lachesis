@@ -28,18 +28,6 @@ export type Route = {
   fork: iFork;
 };
 
-// export class Route {
-//   constructor(text: string = '', fork?: iFork) {
-//     this.id = uuidv4();
-//     this.text = text;
-//     this.fork = fork;
-//   }
-
-//   id: string;
-//   text: string;
-//   fork: iFork;
-// }
-
 /**
  * Connects a route to multiple ones
  */
